@@ -1,6 +1,6 @@
 class Camera {
 
-    constructor (ortho, pos, up, look_at, view, back_color) {
+    constructor (ortho, pos, up, look_at, back_color) {
 
         this.move_cam = "";
         this.ortho_camera = ortho
@@ -31,7 +31,6 @@ class Camera {
         this.THREEcamera.position.copy(pos)
         this.THREEcamera.lookAt(look_at)
 
-        this.view = view
         this.back_color = back_color;
     }
 
@@ -42,10 +41,10 @@ class Camera {
 
     setViewPort(renderer){
 
-        var left = Math.floor( window.innerHeight * this.view.x );
-        var bottom = Math.floor( window.innerHeight * this.view.y );
-        var width = Math.floor( window.innerHeight * 0.5 );
-        var height = Math.floor( window.innerHeight * 0.5 );
+        var left = Math.floor( 0  );
+        var bottom = Math.floor( 0 );
+        var width = Math.floor( window.innerHeight  );
+        var height = Math.floor( window.innerHeight  );
 
         renderer.setViewport( left, bottom, width, height );
         renderer.setScissor( left, bottom, width, height );
@@ -66,16 +65,5 @@ class Camera {
         }
     }
 
-    zoom(z) {
-        var zoom = this.THREEcamera.position.z;
-        this.THREEcamera.position.z += z
-
-        if (this.THREEcamera.position.z > 40) {
-            this.THREEcamera.position.z = 40;
-        } else 
-        if (this.THREEcamera.position.z < 5) {
-            this.THREEcamera.position.z = 5;
-        }  
-    }
 
 }
