@@ -73,19 +73,20 @@ class Camera {
 
         var aspect = width_pix / height_pix
 
-        // create rays
-        
-        
+        // create ray
         var look_dir_n = THREE.Vector3.subVectors(this.look_at, this.pos).normalize()
         var left       = THREE.Vector3.crossVectors(look_dir_n, this.up).multiplyScalar(aspect)
 
-        var ray
         for (x = 0; x < width_pix; x++) {
             for (y = 0; y < height_pix; y++){
                 xx = (x/width_pix) - 0.5
                 yy = (y/height_pix) - 0.5
-                var D = look_dir_n
-                var ray = new Ray
+                var dy = up.copy().multiplyScalar(yy)
+                var dx = left.copy().multiplyScalar(xx)
+                var dd = THREE.Vector3.addVectors(dx, dy)
+                var D = THREE.Vector3.addVectors( look_dir_n, dd)
+                var ray = new Ray(this.pos, D)
+                ray.raytrace()
             }
         }
 
