@@ -6,6 +6,7 @@ class Camera {
         this.ortho_camera = ortho
         this.z_rotation = 0;
         this.pos = pos
+        this.up = up.normalize()
         this.look_at = look_at
         this.fov = 45
         
@@ -69,7 +70,27 @@ class Camera {
     raytrace(width_pix, height_pix, ctx) {
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, width_pix, height_pix);
+
         var aspect = width_pix / height_pix
+
+        // create rays
+        
+        
+        var look_dir_n = THREE.Vector3.subVectors(this.look_at, this.pos).normalize()
+        var left       = THREE.Vector3.crossVectors(look_dir_n, this.up).multiplyScalar(aspect)
+
+        var ray
+        for (x = 0; x < width_pix; x++) {
+            for (y = 0; y < height_pix; y++){
+                xx = (x/width_pix) - 0.5
+                yy = (y/height_pix) - 0.5
+                var D = look_dir_n
+                var ray = new Ray
+            }
+        }
+
+
+
     }
 
 }
