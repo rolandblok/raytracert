@@ -7,6 +7,7 @@ class Camera {
         this.z_rotation = 0;
         this.pos = pos
         this.look_at = look_at
+        this.fov = 45
         
         //THREE
         if (ortho) {
@@ -25,7 +26,7 @@ class Camera {
             //aspect — Camera frustum aspect ratio.
             //near — Camera frustum near plane.
             //far — Camera frustum far plane.
-            this.THREEcamera = new THREE.PerspectiveCamera( 45, 1, 0.01, 2000 );
+            this.THREEcamera = new THREE.PerspectiveCamera( this.fov, 1, 0.01, 2000 );
         }
         this.THREEcamera.up = up
         this.THREEcamera.position.copy(pos)
@@ -65,5 +66,10 @@ class Camera {
         }
     }
 
+    raytrace(width_pix, height_pix, ctx) {
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, width_pix, height_pix);
+        var aspect = width_pix / height_pix
+    }
 
 }

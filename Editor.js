@@ -3,6 +3,9 @@ class Editor {
 
     constructor(name) {
 
+        this.canvas_raytracer = document.getElementById("canvas_raytrace");
+        this.ctx_raytracer = this.canvas_raytracer.getContext("2d");
+
         this.name = name;
         this.canvas = document.getElementById("canvas");
         this.canvas.addEventListener("mousedown", this, false);
@@ -66,6 +69,14 @@ class Editor {
         document.body.appendChild(this.stats.dom);
         
         this.gui = new dat.GUI();
+        var gui_raytrace = this.gui.addFolder('RayTracer')
+        this.ray_trace_setting = new Set()
+        this.ray_trace_setting.width = 640
+        this.ray_trace_setting.height = 480
+        gui_raytrace.add(this.ray_trace_setting, 'width')
+        gui_raytrace.add(this.ray_trace_setting, 'height')
+        gui_raytrace.add(this, 'raytrace')
+
         var gui_primitve_list = this.gui.addFolder('blocks')
         var gui_new_primitive  = this.gui.addFolder('New primitive')
         this.new_primitive = new Set()
@@ -134,9 +145,14 @@ class Editor {
     }
 
     render() {
-
         this.renderer.render(this.three_scene, this.camera.THREEcamera)
             
+    }
+
+    raytrace() {
+        this.canvas_raytracer.width  = this.ray_trace_setting.width
+        this.canvas_raytracer.height = this.ray_trace_setting.height
+        this.camera.raytrace(this.ray_trace_setting.width, this.ray_trace_setting.height, this.ctx_raytracer)
     }
 
     _raycastMouseToTile(e){
