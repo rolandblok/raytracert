@@ -10,14 +10,14 @@ class Sphere extends Primitive {
         three_scene.add( this.mesh_sphere )
     }
 
-    hit (ray)
+    hit(ray)
     {
         var R = this.geometry.radius ;
         var center = this.p;
         var origin = ray.origin;
         var direction = ray.direction;
 
-        var t = THREE.Vector3.subVectors(origin, center);
+        var t = origin.clone().sub(center);
         var c2 = direction.dot(direction);
         var c1 = direction.dot(t);
         var c0 = t.dot(t) - R*R;
@@ -29,12 +29,14 @@ class Sphere extends Primitive {
         } else if (discriminant > 0) {
             var lambda1 = (-c1+sqrt(discriminant))/(2.0*c2); 
             var lambda2 = (-c1-sqrt(discriminant))/(2.0*c2);
+            return min(lambda1, lambda2);
+        } 
 
-            var lambda = min(lambda1, lambda2);
-        } else {
-            var lambda = -c1/(2.0*c2);
-        }
+        return -c1/(2.0*c2);
+    }
 
-        return ray.evaluate(lambda);
+    get_normal(hit_point) {
+        var normal = hit_point.clone().sub(this.p);
+        return normal.normalize();
     }
 }
