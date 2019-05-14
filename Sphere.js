@@ -27,14 +27,9 @@ class Sphere extends Primitive {
         if (discriminant < 0) {
             return undefined;
         } else if (discriminant > 0) {
-            var lambda1 = (-c1+sqrt(discriminant))/(2.0*c2); 
-            var lambda2 = (-c1-sqrt(discriminant))/(2.0*c2);
-
-            var lambda = min(lambda1, lambda2);
+            return min(lambda1, lambda2);
         } else {
-            var lambda = -c1/(2.0*c2);
+           return -c1/(2.0*c2);
         }
-
-        return ray.evaluate(lambda);
     }
 }
