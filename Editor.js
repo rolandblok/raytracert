@@ -43,17 +43,8 @@ class Editor {
         document.body.appendChild(this.renderer.domElement);
 
         //lights
-        this.lights = [];
-        this.lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
-        
-        this.lights[ 0 ].position.set( 10, 0, 10 );
-        
-        this.three_scene.add( this.lights[ 0 ] );
-        
-        this.lighthelper = new THREE.PointLightHelper(this.lights[0])
-        this.three_scene.add(this.lighthelper)
-        
-
+        var light1_pos = new THREE.Vector3( 10, 0, 10)
+        this.model.addLight(light1_pos)
         
         /*
         var light = new THREE.DirectionalLight( 0xffffff, 1 );

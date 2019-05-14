@@ -84,10 +84,14 @@ class Camera {
                 var dy = this.up.clone().multiplyScalar(yy)
                 var dx = left.clone().multiplyScalar(xx)
                 var dd = new THREE.Vector3().addVectors(dx, dy)
-                var D  = new THREE.Vector3().addVectors( look_dir_n, dd)
+                var D  = new THREE.Vector3().addVectors( this.look_at, dd )
+
                 var ray = new Ray(this.pos, D)
                 var color = model.raytrace(ray)
                 // insert color paiunt on ctx
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, 1, 1);
+
             }
         }
 
