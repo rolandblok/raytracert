@@ -67,26 +67,27 @@ class Camera {
         }
     }
 
-    raytrace(width_pix, height_pix, ctx) {
+    raytrace(model, width_pix, height_pix, ctx) {
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, width_pix, height_pix);
 
         var aspect = width_pix / height_pix
 
         // create ray
-        var look_dir_n = THREE.Vector3.subVectors(this.look_at, this.pos).normalize()
-        var left       = THREE.Vector3.crossVectors(look_dir_n, this.up).multiplyScalar(aspect)
+        var look_dir_n = new THREE.Vector3().subVectors(this.look_at, this.pos).normalize()
+        var left = new THREE.Vector3().crossVectors(look_dir_n, this.up).multiplyScalar(aspect)
 
-        for (x = 0; x < width_pix; x++) {
-            for (y = 0; y < height_pix; y++){
-                xx = (x/width_pix) - 0.5
-                yy = (y/height_pix) - 0.5
-                var dy = up.copy().multiplyScalar(yy)
-                var dx = left.copy().multiplyScalar(xx)
-                var dd = THREE.Vector3.addVectors(dx, dy)
-                var D = THREE.Vector3.addVectors( look_dir_n, dd)
+        for (let x = 0; x < width_pix; x++) {
+            for (let y = 0; y < height_pix; y++){
+                var xx = (x/width_pix) - 0.5
+                var yy = (y/height_pix) - 0.5
+                var dy = this.up.clone().multiplyScalar(yy)
+                var dx = left.clone().multiplyScalar(xx)
+                var dd = new THREE.Vector3().addVectors(dx, dy)
+                var D  = new THREE.Vector3().addVectors( look_dir_n, dd)
                 var ray = new Ray(this.pos, D)
-                ray.raytrace()
+                var color = model.raytrace(ray)
+                // insert color paiunt on ctx
             }
         }
 
