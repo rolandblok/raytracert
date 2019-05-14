@@ -30,7 +30,7 @@ class Sphere extends Primitive {
         } else if (discriminant > 0) {
             var lambda1 = (-b+Math.sqrt(discriminant))/(2.0*a); 
             var lambda2 = (-b-Math.sqrt(discriminant))/(2.0*a);
-            return min(lambda1, lambda2);
+            return Math.min(lambda1, lambda2);
         } 
 
         return -b/(2.0*a);
