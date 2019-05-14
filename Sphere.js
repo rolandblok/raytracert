@@ -19,21 +19,21 @@ class Sphere extends Primitive {
         var direction = ray.direction;
 
         var t = origin.clone().sub(center);
-        var c2 = direction.dot(direction);
-        var c1 = direction.dot(t);
-        var c0 = t.dot(t) - R*R;
+        var a = direction.dot(direction);
+        var b = 2.0*direction.dot(t);
+        var c = t.dot(t) - R*R;
 
-        var discriminant = c1*c1 - 4.0*c2*c0;
+        var discriminant = b*b - 4.0*a*c;
 
         if (discriminant < 0) {
             return undefined;
         } else if (discriminant > 0) {
-            var lambda1 = (-c1+sqrt(discriminant))/(2.0*c2); 
-            var lambda2 = (-c1-sqrt(discriminant))/(2.0*c2);
+            var lambda1 = (-b+sqrt(discriminant))/(2.0*a); 
+            var lambda2 = (-b-sqrt(discriminant))/(2.0*a);
             return min(lambda1, lambda2);
         } 
 
-        return -c1/(2.0*c2);
+        return -b/(2.0*a);
     }
 
     get_normal(hit_point) {
