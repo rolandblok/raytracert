@@ -18,7 +18,7 @@ class Model {
             console.log("labda = " + labda)
             if ((labda != undefined) && (labda > 0)) {
                 if ((labda_min == undefined) || (labda_min > labda)) {
-                    labda_min == labda
+                    labda_min = labda
                     hit_primitive = primitive;
                 }
             }

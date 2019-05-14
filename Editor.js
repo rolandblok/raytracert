@@ -62,8 +62,8 @@ class Editor {
         this.gui = new dat.GUI();
         var gui_raytrace = this.gui.addFolder('RayTracer')
         this.ray_trace_setting = new Set()
-        this.ray_trace_setting.width = 640
-        this.ray_trace_setting.height = 480
+        this.ray_trace_setting.width = 64
+        this.ray_trace_setting.height = 48
         gui_raytrace.add(this.ray_trace_setting, 'width')
         gui_raytrace.add(this.ray_trace_setting, 'height')
         gui_raytrace.add(this, 'raytrace')

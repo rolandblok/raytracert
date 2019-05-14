@@ -89,7 +89,7 @@ class Camera {
                 var ray = new Ray(this.pos, D)
                 var color = model.raytrace(ray)
                 // insert color paiunt on ctx
-                ctx.fillStyle = color;
+                ctx.fillStyle = "#"+color.getHexString();
                 ctx.fillRect(x, y, 1, 1);
 
             }
