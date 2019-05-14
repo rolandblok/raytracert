@@ -76,6 +76,7 @@ class Editor {
         gui_raytrace.add(this.ray_trace_setting, 'width')
         gui_raytrace.add(this.ray_trace_setting, 'height')
         gui_raytrace.add(this, 'raytrace')
+        gui_raytrace.open();
 
         var gui_primitve_list = this.gui.addFolder('blocks')
         var gui_new_primitive  = this.gui.addFolder('New primitive')

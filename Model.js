@@ -5,12 +5,6 @@ class Model {
         this.three_scene = three_scene;
     }
 
-    raytrace(ray) {
-        // zoek intersect met all objecten
-        
-        // neem dichtbijzijnste (labda kleinste)
-    }
-
     addBlock(x,y,z,color) {
 
         var blokje = new Block(this.three_scene, x,y,z,color)
