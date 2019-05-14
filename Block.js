@@ -13,5 +13,10 @@ class Block extends Primitive  {
 
     }
 
+    hit (ray)
+    {
+        
+    }
+
 
 }
