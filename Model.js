@@ -7,7 +7,7 @@ class Model {
     }
 
     raytrace(eye_ray){
-        var total_color = new THREE.color("black")
+        var total_color = new THREE.Color("black")
 
         // loop over primitives heen voor intersects
         var labda_min = undefined
@@ -15,6 +15,7 @@ class Model {
         var hit_point = undefined
         for (var primitive of Object.values(this.primitives)) {
             var labda = primitive.hit(eye_ray)
+            console.log("labda = " + labda)
             if ((labda != undefined) && (labda > 0)) {
                 if ((labda_min == undefined) || (labda_min > labda)) {
                     labda_min == labda
@@ -26,19 +27,19 @@ class Model {
         // kleinste labra is hit --> hitpoint
         if (labda_min != undefined) {
             hit_point = eye_ray.evaluate(labda_min)
-        }
 
-        // vind ray hitpoint tot lamp --> labda
-        for(var light of this.lights) {
-            var inv_light_ray = new Ray(hit_point, light.loc)
+            // vind ray hitpoint tot lamp --> labda
+            for(var light of this.lights) {
+                var inv_light_ray = new Ray(hit_point, light.loc)
 
-            // zoek obstructies 
-            // # todo schaduw
+                // zoek obstructies 
+                // # todo schaduw
 
-            // als geen obstructie
-            var color = hit_primitive.shade(inv_light_ray)
-            total_color = total_color.add(color)
+                // als geen obstructie
+                var color = hit_primitive.shade(inv_light_ray)
+                total_color = total_color.add(color)
 
+            }
         }
 
         return total_color

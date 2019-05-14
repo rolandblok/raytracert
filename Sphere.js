@@ -1,8 +1,9 @@
 class Sphere extends Primitive {
     constructor (three_scene, pos, color) {
-        super();
+        super(color);
         this.p = pos
-        var geometry = new THREE.SphereGeometry( 1, 15, 15  );
+        this.radius = 10;
+        var geometry = new THREE.SphereGeometry( this.radius, 15, 15  );
         var material = new THREE.MeshPhongMaterial( {color:color} );
         this.mesh_sphere = new THREE.Mesh( geometry, material );
         this.mesh_sphere.position.set(this.p.x+0.5, this.p.y+0.5, this.p.z+0.5)
@@ -12,7 +13,7 @@ class Sphere extends Primitive {
 
     hit(ray)
     {
-        var R = this.geometry.radius ;
+        var R = this.radius ;
         var center = this.p;
         var origin = ray.origin;
         var direction = ray.direction;

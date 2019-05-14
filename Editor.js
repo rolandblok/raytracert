@@ -25,7 +25,7 @@ class Editor {
 
 
         var pos, up, look_at, back_color;
-        pos        = new THREE.Vector3(0, 0, -20);
+        pos        = new THREE.Vector3(20, 0, 0);
         up         = new THREE.Vector3(0,   0,   1)
         look_at    = new THREE.Vector3(0,   0,   0)
         back_color = 0x000000
@@ -43,7 +43,7 @@ class Editor {
         document.body.appendChild(this.renderer.domElement);
 
         //lights
-        var light1_pos = new THREE.Vector3( 10, 0, 10)
+        var light1_pos = new THREE.Vector3( 20, 0, 20)
         this.model.addLight(light1_pos)
         
         /*
@@ -144,7 +144,7 @@ class Editor {
     raytrace() {
         this.canvas_raytracer.width  = this.ray_trace_setting.width
         this.canvas_raytracer.height = this.ray_trace_setting.height
-        this.camera.raytrace(this.ray_trace_setting.width, this.ray_trace_setting.height, this.ctx_raytracer)
+        this.camera.raytrace(this.model, this.ray_trace_setting.width, this.ray_trace_setting.height, this.ctx_raytracer)
     }
 
     _raycastMouseToTile(e){
