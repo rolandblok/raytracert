@@ -13,10 +13,12 @@ class Block extends Primitive  {
 
     }
 
-    hit (ray)
+    hit(ray)
     {
         return undefined;
     }
 
-
+    get_normal(hit_point) {
+        throw new Error('Please implement Primitive.get_normal()');
+    }
 }
