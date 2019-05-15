@@ -15,7 +15,6 @@ class Model {
         var hit_point = undefined
         for (var primitive of Object.values(this.primitives)) {
             var labda = primitive.hit(eye_ray)
-            console.log("labda = " + labda)
             if ((labda != undefined) && (labda > 0)) {
                 if ((labda_min == undefined) || (labda_min > labda)) {
                     labda_min = labda

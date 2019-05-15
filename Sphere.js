@@ -11,21 +11,6 @@ class Sphere extends Primitive {
         three_scene.add( this.mesh_sphere )
     }
 
-    hit2(ray) {
-        // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
-        var r = this.radius
-        var C = this.p;
-        var L = ray.direction;
-        var O = ray.origin
-
-        var O_C = O.clone().sub(C)
-        var a = L.dot(L)
-        var b = 2.0*(L.dot(O_C))
-        var c = O_C.dot(O_C) - r*r
-
-        var disc = b*b - 4.0*a*c
-    }
-
     hit(ray)
     {
         var R = this.radius ;
