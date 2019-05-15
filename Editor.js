@@ -27,7 +27,7 @@ class Editor {
         var pos, up, look_at, back_color;
         pos        = new THREE.Vector3(20, 0, 0);
         up         = new THREE.Vector3(0,   0,   1)
-        look_at    = new THREE.Vector3(0,   0,   0)
+        look_at    = new THREE.Vector3(0,   0,  0)
         back_color = 0x000000
         this.camera = new Camera(false,pos, up, look_at, back_color)
                           
