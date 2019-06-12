@@ -29,14 +29,24 @@ class Model {
 
             // vind ray hitpoint tot lamp --> labda
             for(var light of this.lights) {
+                var light_ray = new Ray(light.loc, hit_point)
                 var inv_light_ray = new Ray(hit_point, light.loc)
 
                 // zoek obstructies 
-                // # todo schaduw
+                var obstruction_detected = false
+                for (var primitive of Object.values(this.primitives)) {
+                    var lambda = primitive.hit(light_ray)
+                    if ((lambda > FLOATING_POINT_ACCURACY) && (lambda < 1.0 - FLOATING_POINT_ACCURACY)) {
+                        obstruction_detected = true
+                        break
+                    }
+                }
 
                 // als geen obstructie
-                var color = hit_primitive.shade(inv_light_ray)
-                total_color = total_color.add(color)
+                if (!obstruction_detected) {
+                    var color = hit_primitive.shade(inv_light_ray)
+                    total_color = total_color.add(color)
+                }
 
             }
         }
@@ -49,23 +59,23 @@ class Model {
 
     }
 
-    addBlock(x,y,z,color) {
+    addPlane(normal, distance, color) {
 
-        var blokje = new Block(this.three_scene, x,y,z,color)
-        var id = this._genID(x,y,z)
-        this.primitives[id] = blokje
+        var plane = new Plane(this.three_scene, normal, distance,color)
+        var id = this._genID(normal.x,normal.y,normal.z)
+        this.primitives[id] = plane
 
         return id;
     }
 
-    addSphere(pos, color) {
-        var sphere = new Sphere(this.three_scene, pos, color)
+    addSphere(pos, radius, color) {
+        var sphere = new Sphere(this.three_scene, pos, radius, color)
         var id = this._genID(pos.x, pos.y, pos.z)
         this.primitives[id] = sphere
 
         return id;
-    
     }
+
 
     update(d_time_ms) {
 

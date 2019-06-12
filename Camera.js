@@ -73,7 +73,7 @@ class Camera {
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, width_pix, height_pix);
 
-        var aspect = width_pix / height_pix
+        var aspect = 1.0 * width_pix / height_pix
 
         // create ray
 
@@ -82,7 +82,7 @@ class Camera {
                 var xx = 0.5 - (x/width_pix) 
                 var yy = 0.5 - (y/height_pix)
                 var dy = this.look_up_n.clone().multiplyScalar(yy)
-                var dx = this.look_left_n.clone().multiplyScalar(xx)
+                var dx = this.look_left_n.clone().multiplyScalar(xx*aspect);
                 var dd = new THREE.Vector3().addVectors(dx, dy)
                 var D  = new THREE.Vector3().addVectors( this.look_dir_n, dd )
                 D.add(this.pos)

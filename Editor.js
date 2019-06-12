@@ -62,8 +62,8 @@ class Editor {
         this.gui = new dat.GUI();
         var gui_raytrace = this.gui.addFolder('RayTracer')
         this.ray_trace_setting = new Set()
-        this.ray_trace_setting.width = 64
-        this.ray_trace_setting.height = 48
+        this.ray_trace_setting.width = 640
+        this.ray_trace_setting.height = 480
         gui_raytrace.add(this.ray_trace_setting, 'width')
         gui_raytrace.add(this.ray_trace_setting, 'height')
         gui_raytrace.add(this, 'raytrace')
@@ -76,11 +76,13 @@ class Editor {
         this.new_primitive.x = 0
         this.new_primitive.y = 0
         this.new_primitive.z = 0
+        this.new_primitive.r = 1
         this.new_primitive.color = "#ffffff"
-        gui_new_primitive.add(this.new_primitive, "type", ['sphere', 'block'])
-        gui_new_primitive.add(this.new_primitive, "x", 0, 9).step(1)
-        gui_new_primitive.add(this.new_primitive, "y", 0, 9).step(1)
-        gui_new_primitive.add(this.new_primitive, "z", 0, 9).step(1)
+        gui_new_primitive.add(this.new_primitive, "type", ['sphere', 'plane'])
+        gui_new_primitive.add(this.new_primitive, "x", -9, 9).step(0.1)
+        gui_new_primitive.add(this.new_primitive, "y", -9, 9).step(0.1)
+        gui_new_primitive.add(this.new_primitive, "z", -9, 9).step(0.1)
+        gui_new_primitive.add(this.new_primitive, "r", -9, 9).step(0.1)
         gui_new_primitive.addColor(this.new_primitive, "color")
         gui_new_primitive.add(this, "addNewPrimitive")
 
@@ -98,11 +100,11 @@ class Editor {
     }
 
     addNewPrimitive() {
+        var vec = new THREE.Vector3(this.new_primitive.x, this.new_primitive.y, this.new_primitive.z);
         if (this.new_primitive.type == 'sphere') {
-            var pos = new THREE.Vector3(this.new_primitive.x, this.new_primitive.y, this.new_primitive.z);
-            this.model.addSphere(pos, this.new_primitive.color)
-        } else if (this.new_primitive.type == 'block') {
-           this.model.addBlock(this.new_primitive.x, this.new_primitive.y, this.new_primitive.z, this.new_primitive.color)
+            this.model.addSphere(vec, this.new_primitive.r, this.new_primitive.color)
+        } else if (this.new_primitive.type == 'plane') {
+           this.model.addPlane(vec, this.new_primitive.r, this.new_primitive.color)
         }
     }
 
