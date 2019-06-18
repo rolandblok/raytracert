@@ -25,11 +25,11 @@ class Editor {
 
 
         var pos, up, look_at, back_color;
-        pos        = new THREE.Vector3(20, 0, 0);
+        pos        = new THREE.Vector3(7, 7, 7);
         up         = new THREE.Vector3(0,   0,   1)
-        look_at    = new THREE.Vector3(0,   0,  0)
+        look_at    = new THREE.Vector3(0,   0,  1)
         back_color = 0x000000
-        this.camera = new Camera(false,pos, up, look_at, back_color)
+        this.camera = new Camera(false, pos, up, look_at, back_color)
                           
         // model
         this.model = new Model(this.three_scene);
@@ -69,7 +69,9 @@ class Editor {
         gui_raytrace.add(this, 'raytrace')
         gui_raytrace.open();
 
-        var gui_primitve_list = this.gui.addFolder('blocks')
+        gui_raytrace.add(this, "load_default_model")
+
+        var gui_primitve_list = this.gui.addFolder('model')
         var gui_new_primitive  = this.gui.addFolder('New primitive')
         this.new_primitive = new Set()
         this.new_primitive.type = 'sphere'
@@ -120,6 +122,39 @@ class Editor {
         } else if (this.new_primitive.type == 'plane') {
            this.model.addPlane(vec, this.new_primitive.r, this.new_primitive.color, this.new_primitive.reflective)
         }
+    }
+
+    load_default_model() {
+        var vec = new THREE.Vector3(-2, 0, 2);
+        var r = 1 
+        var color = "#ff0000"
+        var refl = false
+        this.model.addSphere(vec, r, color, refl)
+
+        var vec = new THREE.Vector3(2, 0, 2);
+        var r = 1 
+        var color = "#00ff00"
+        var refl = false
+        this.model.addSphere(vec, r, color, refl)
+
+        var vec = new THREE.Vector3(0, 2, 2);
+        var r = 1 
+        var color = "#0000ff"
+        var refl = false
+        this.model.addSphere(vec, r, color, refl)
+
+        var vec = new THREE.Vector3(0, -2, 2);
+        var r = 1 
+        var color = "#ff00ff"
+        var refl = true
+        this.model.addSphere(vec, r, color, refl)
+
+        var vec = new THREE.Vector3(0, 0, 1);
+        var r = 0 
+        var color = "#ffffff"
+        var refl = false
+        this.model.addPlane(vec, r, color, refl)
+
     }
 
     resize() {
