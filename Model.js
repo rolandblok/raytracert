@@ -33,8 +33,8 @@ class Model {
 
             if (hit_primitive.is_reflective()) {
                 // Notation as in https://math.stackexchange.com/a/13263
-                var d = eye_ray.end_point;
-                var n = hit_primitive.normal;
+                var d = eye_ray.direction;
+                var n = hit_primitive.get_normal(hit_point);
                 var r = new THREE.Vector3().subVectors(d, n.multiplyScalar(2.0*d.dot(n)))
                 var new_point = new THREE.Vector3().addVectors( hit_point, r );
                 var new_ray = new Ray(hit_point, new_point);
@@ -79,17 +79,17 @@ class Model {
 
     }
 
-    addPlane(normal, distance, color) {
+    addPlane(normal, distance, color, reflective) {
 
-        var plane = new Plane(this.three_scene, normal, distance,color)
+        var plane = new Plane(this.three_scene, normal, distance,color, reflective)
         var id = this._genID(normal.x,normal.y,normal.z)
         this.primitives[id] = plane
 
         return id;
     }
 
-    addSphere(pos, radius, color) {
-        var sphere = new Sphere(this.three_scene, pos, radius, color)
+    addSphere(pos, radius, color, reflective) {
+        var sphere = new Sphere(this.three_scene, pos, radius, color, reflective)
         var id = this._genID(pos.x, pos.y, pos.z)
         this.primitives[id] = sphere
 
