@@ -78,15 +78,29 @@ class Editor {
         this.new_primitive.z = 0
         this.new_primitive.r = 1
         this.new_primitive.color = "#ffffff"
+        this.new_primitive.reflective = false
         gui_new_primitive.add(this.new_primitive, "type", ['sphere', 'plane'])
         gui_new_primitive.add(this.new_primitive, "x", -9, 9).step(0.1)
         gui_new_primitive.add(this.new_primitive, "y", -9, 9).step(0.1)
         gui_new_primitive.add(this.new_primitive, "z", -9, 9).step(0.1)
         gui_new_primitive.add(this.new_primitive, "r", -9, 9).step(0.1)
         gui_new_primitive.addColor(this.new_primitive, "color")
+        gui_new_primitive.add(this.new_primitive, "reflective")
+
         gui_new_primitive.add(this, "addNewPrimitive")
 
         gui_new_primitive.open();
+
+        var gui_camera = this.gui.addFolder('camera')
+        gui_camera.add(this.camera.THREEcamera.position, "x").step(0.5)
+        gui_camera.add(this.camera.THREEcamera.position, "y").step(0.5)
+        gui_camera.add(this.camera.THREEcamera.position, "z").step(0.5)
+        gui_camera.add(this.camera, "look_at_x").step(0.5)
+        gui_camera.add(this.camera, "look_at_x").step(0.5)
+        gui_camera.add(this.camera, "look_at_z").step(0.5)
+        gui_camera.open();
+
+        
 
         
         this.isDown = false;
@@ -102,9 +116,9 @@ class Editor {
     addNewPrimitive() {
         var vec = new THREE.Vector3(this.new_primitive.x, this.new_primitive.y, this.new_primitive.z);
         if (this.new_primitive.type == 'sphere') {
-            this.model.addSphere(vec, this.new_primitive.r, this.new_primitive.color)
+            this.model.addSphere(vec, this.new_primitive.r, this.new_primitive.color, this.new_primitive.reflective)
         } else if (this.new_primitive.type == 'plane') {
-           this.model.addPlane(vec, this.new_primitive.r, this.new_primitive.color)
+           this.model.addPlane(vec, this.new_primitive.r, this.new_primitive.color, this.new_primitive.reflective)
         }
     }
 

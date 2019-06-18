@@ -2,6 +2,7 @@ class Model {
 
     constructor (three_scene) {
         this.primitives = {}
+        this.primitive_counter = 0
         this.lights = []
         this.three_scene = three_scene;
     }
@@ -86,7 +87,8 @@ class Model {
     }
 
     _genID(x,y,z) {
-        return "" + x + "_" + y + "_" + z
+        this.primitive_counter ++
+        return "" +this.primitive_counter
     }
 }
 

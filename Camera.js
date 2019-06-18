@@ -5,11 +5,8 @@ class Camera {
         this.move_cam = "";
         this.ortho_camera = ortho
         this.z_rotation = 0;
-        this.pos = pos
-        this.look_dir_n = look_at.clone().sub(pos).normalize()
-        this.look_left_n = up.clone().cross(this.look_dir_n).normalize()
-        this.look_up_n = this.look_dir_n.clone().cross(this.look_left_n)
         this.look_at = look_at
+
         this.fov = 45
         
         //THREE
@@ -36,6 +33,30 @@ class Camera {
         this.THREEcamera.lookAt(look_at)
 
         this.back_color = back_color;
+    }
+
+    get look_at_x() {
+        return this.look_at.x
+    }
+    get look_at_y() {
+        return this.look_at.y
+    }
+    get look_at_z() {
+        return this.look_at.z
+    }
+    set look_at_x(x) {
+        this.look_at.x = x
+        this.THREEcamera.lookAt(this.look_at)
+    }
+    set look_at_y(y) {
+        this.look_at.y = y
+        this.THREEcamera.lookAt(this.look_at)
+
+    }
+    set look_at_z(z) {
+        this.look_at.z = z
+        this.THREEcamera.lookAt(this.look_at)
+
     }
 
     resize(width, height) {
@@ -76,18 +97,20 @@ class Camera {
         var aspect = 1.0 * width_pix / height_pix
 
         // create ray
-
+        var look_dir_n = this.look_at.clone().sub(this.THREEcamera.position).normalize()
+        var look_left_n = this.THREEcamera.up.clone().cross(look_dir_n).normalize()
+        var look_up_n = look_dir_n.clone().cross(look_left_n)
         for (let x = 0; x < width_pix; x++) {
             for (let y = 0; y < height_pix; y++){
                 var xx = 0.5 - (x/width_pix) 
                 var yy = 0.5 - (y/height_pix)
-                var dy = this.look_up_n.clone().multiplyScalar(yy)
-                var dx = this.look_left_n.clone().multiplyScalar(xx*aspect);
+                var dy = look_up_n.clone().multiplyScalar(yy)
+                var dx = look_left_n.clone().multiplyScalar(xx*aspect);
                 var dd = new THREE.Vector3().addVectors(dx, dy)
-                var D  = new THREE.Vector3().addVectors( this.look_dir_n, dd )
-                D.add(this.pos)
+                var D  = new THREE.Vector3().addVectors( look_dir_n, dd )
+                D.add(this.THREEcamera.position)
 
-                var ray = new Ray(this.pos, D)
+                var ray = new Ray(this.THREEcamera.position, D)
                 var color = model.raytrace(ray)
                 // insert color paiunt on ctx
                 ctx.fillStyle = "#"+color.getHexString();

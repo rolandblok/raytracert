@@ -3,7 +3,7 @@ class Plane extends Primitive {
         super(color);
         this.normal = normal.clone().normalize();
         this.distance_to_origin = distance_to_origin
-        var geometry = new THREE.PlaneGeometry( 2, 2, 32, 32  );
+        var geometry = new THREE.PlaneGeometry( 200, 200, 32, 32  );
         var material = new THREE.MeshPhongMaterial( {color:color} );
         this.mesh_plane = new THREE.Mesh( geometry, material );
 
