@@ -1,6 +1,6 @@
 class Sphere extends Primitive {
     constructor (three_scene, pos, radius, color) {
-        super(color);
+        super(color, false);
         this.p = pos
         this.radius = radius;
         var geometry = new THREE.SphereGeometry( this.radius, 15, 15  );

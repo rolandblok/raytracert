@@ -1,6 +1,7 @@
 class Primitive {
-    constructor(color) {
+    constructor(color, reflective) {
         this.color = new THREE.Color(color);
+        this.reflective = reflective;
     }
 
     hit(ray) {
@@ -9,6 +10,10 @@ class Primitive {
 
     get_normal(hit_point) {
         throw new Error('Please implement Primitive.get_normal()');
+    }
+
+    is_reflective() {
+        return this.reflective;
     }
 
     shade(inverse_light_ray) {

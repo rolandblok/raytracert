@@ -6,8 +6,11 @@ class Model {
         this.three_scene = three_scene;
     }
 
-    raytrace(eye_ray){
-        var total_color = new THREE.Color("black")
+    raytrace(eye_ray, depth){
+        
+        if (depth <= 0){
+            return new THREE.Color("black");
+        }
 
         // loop over primitives heen voor intersects
         var labda_min = undefined
@@ -27,31 +30,47 @@ class Model {
         if (labda_min != undefined) {
             hit_point = eye_ray.evaluate(labda_min)
 
-            // vind ray hitpoint tot lamp --> labda
-            for(var light of this.lights) {
-                var light_ray = new Ray(light.loc, hit_point)
-                var inv_light_ray = new Ray(hit_point, light.loc)
+            if (hit_primitive.is_reflective()) {
+                // Notation as in https://math.stackexchange.com/a/13263
+                var d = eye_ray.end_point;
+                var n = hit_primitive.normal;
+                var r = new THREE.Vector3().subVectors(d, n.multiplyScalar(2.0*d.dot(n)))
+                var new_point = new THREE.Vector3().addVectors( hit_point, r );
+                var new_ray = new Ray(hit_point, new_point);
 
-                // zoek obstructies 
-                var obstruction_detected = false
-                for (var primitive of Object.values(this.primitives)) {
-                    var lambda = primitive.hit(light_ray)
-                    if ((lambda > FLOATING_POINT_ACCURACY) && (lambda < 1.0 - FLOATING_POINT_ACCURACY)) {
-                        obstruction_detected = true
-                        break
+                return this.raytrace(new_ray, depth-1);
+            }
+            else {
+                var total_color = new THREE.Color("black")
+
+                // vind ray hitpoint tot lamp --> labda
+                for(var light of this.lights) {
+                    var light_ray = new Ray(light.loc, hit_point)
+                    var inv_light_ray = new Ray(hit_point, light.loc)
+
+                    // zoek obstructies 
+                    var obstruction_detected = false
+                    for (var primitive of Object.values(this.primitives)) {
+                        var lambda = primitive.hit(light_ray)
+                        if ((lambda > FLOATING_POINT_ACCURACY) && (lambda < 1.0 - FLOATING_POINT_ACCURACY)) {
+                            obstruction_detected = true
+                            break
+                        }
                     }
+
+                    // als geen obstructie
+                    if (!obstruction_detected) {
+                        var color = hit_primitive.shade(inv_light_ray)
+                        total_color = total_color.add(color)
+                    }
+
                 }
 
-                // als geen obstructie
-                if (!obstruction_detected) {
-                    var color = hit_primitive.shade(inv_light_ray)
-                    total_color = total_color.add(color)
-                }
-
+                return total_color;
             }
         }
 
-        return total_color
+        return new THREE.Color("black");
     }
 
     addLight(light) {
