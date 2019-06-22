@@ -10,6 +10,7 @@ class Plane extends Primitive {
         var position = normal.clone().multiplyScalar(distance_to_origin);
         this.mesh_plane.position.set(position.x, position.y, position.z)
         this.mesh_plane.lookAt(position.clone().add(this.normal))
+        this.mesh_plane.name = id
         three_scene.add( this.mesh_plane )
     }
 

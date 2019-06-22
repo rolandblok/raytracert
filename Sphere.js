@@ -7,6 +7,7 @@ class Sphere extends Primitive {
         var material = new THREE.MeshPhongMaterial( {color:color} );
         this.mesh_sphere = new THREE.Mesh( geometry, material );
         this.mesh_sphere.position.set(this.p.x, this.p.y, this.p.z)
+        this.mesh_sphere.name = id;
 
         three_scene.add( this.mesh_sphere )
     }

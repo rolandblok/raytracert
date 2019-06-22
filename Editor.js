@@ -7,17 +7,17 @@ class Editor {
         this.ctx_raytracer = this.canvas_raytracer.getContext("2d");
 
         this.name = name;
-        this.canvas = document.getElementById("canvas");
-        this.canvas.addEventListener("mousedown", this, false);
-        this.canvas.addEventListener("mouseup", this, false);
-        this.canvas.addEventListener("mousemove", this, false);
-        this.canvas.addEventListener("click", this, false);
-        this.canvas.addEventListener("dblclick", this, false);
-        this.canvas.addEventListener("resize", this, false);
+        this.canvas_gl = document.getElementById("canvas_gl");
+        this.canvas_gl.addEventListener("mousedown", this, false);
+        this.canvas_gl.addEventListener("mouseup", this, false);
+        this.canvas_gl.addEventListener("mousemove", this, false);
+        this.canvas_gl.addEventListener("click", this, false);
+        this.canvas_gl.addEventListener("dblclick", this, false);
+        this.canvas_gl.addEventListener("resize", this, false);
         window.addEventListener('resize', function bla(event){this.resize()})
-        this.canvas.addEventListener('keydown', this, false);
-        this.canvas.addEventListener('keyup', this, false);
-        this.canvas.addEventListener('wheel', this, false);
+        this.canvas_gl.addEventListener('keydown', this, false);
+        this.canvas_gl.addEventListener('keyup', this, false);
+        this.canvas_gl.addEventListener('wheel', this, false);
         //this.ctx = canvas.getContext("2d");
 
         // THREE / GL
@@ -30,15 +30,17 @@ class Editor {
         look_at    = new THREE.Vector3(0,   0,  1)
         back_color = 0x000000
         this.camera = new Camera(false, pos, up, look_at, back_color)
+        this.raycaster = new THREE.Raycaster(); 
+
                           
         // model
         this.model = new Model(this.three_scene);
         //this.model.addBlock(1, 1, 1, 0x009955 )
 
         // coor.sys
-        this.axis = new Axis(this.three_scene)
+       // this.axis = new Axis(this.three_scene)
 
-        this.renderer = new THREE.WebGLRenderer({antialias: true, depth: true});
+        this.renderer = new THREE.WebGLRenderer({canvas: this.canvas_gl, antialias: true, depth: true});
         this.renderer.setSize( window.innerHeight/2, window.innerHeight/2 );
         document.body.appendChild(this.renderer.domElement);
 
@@ -71,7 +73,6 @@ class Editor {
 
         gui_raytrace.add(this, "load_default_model")
 
-        var gui_primitve_list = this.gui.addFolder('model')
         var gui_new_primitive  = this.gui.addFolder('New primitive')
         this.new_primitive = new Set()
         this.new_primitive.type = 'sphere'
@@ -210,6 +211,24 @@ class Editor {
     }
 
     onmouseup(e) {
+        var rect = this.canvas_gl.getBoundingClientRect();
+        var x_pos = e.clientX - rect.left
+        var y_pos = e.clientY - rect.top
+        console.log("click "+ x_pos +" "+  y_pos)
+        
+            // some raycasting to deterimine the active tile.
+            this.mouse_position.x = ( x_pos / this.canvas_gl.width ) * 2 - 1;
+            this.mouse_position.y = - ( y_pos / this.canvas_gl.height ) * 2 + 1;
+            this.raycaster.setFromCamera( this.mouse_position, this.camera.THREEcamera);
+            var intersects = this.raycaster.intersectObjects( this.three_scene.children );
+    
+            var objects_ids =  intersects.map(x => x.object.name);
+            for (let object_id of objects_ids) {
+                console.log("id"+ object_id)
+            }
+                
+        
+    
     }
 
     keyDown(e){
