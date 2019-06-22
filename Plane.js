@@ -1,6 +1,6 @@
 class Plane extends Primitive {
-    constructor (three_scene, normal, distance_to_origin, color, reflective) {
-        super(color, reflective);
+    constructor (id, three_scene, normal, distance_to_origin, color, reflective) {
+        super(id, color, reflective);
         this.normal = normal.clone().normalize();
         this.distance_to_origin = distance_to_origin
         var geometry = new THREE.PlaneGeometry( 200, 200, 32, 32  );

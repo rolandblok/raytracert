@@ -1,6 +1,7 @@
 class Model {
 
     constructor (three_scene) {
+        this.primitive_ids = []
         this.primitives = {}
         this.primitive_counter = 0
         this.lights = []
@@ -81,19 +82,21 @@ class Model {
 
     addPlane(normal, distance, color, reflective) {
 
-        var plane = new Plane(this.three_scene, normal, distance,color, reflective)
-        var id = this._genID(normal.x,normal.y,normal.z)
+        var id = this._genID("plane", normal.x,normal.y,normal.z)
+        var plane = new Plane(id, this.three_scene, normal, distance,color, reflective)
         this.primitives[id] = plane
+        this.primitive_ids.push(id)
 
-        return id;
+        return plane;
     }
 
     addSphere(pos, radius, color, reflective) {
-        var sphere = new Sphere(this.three_scene, pos, radius, color, reflective)
-        var id = this._genID(pos.x, pos.y, pos.z)
+        var id = this._genID("sphere", pos.x, pos.y, pos.z)
+        var sphere = new Sphere(id, this.three_scene, pos, radius, color, reflective)
         this.primitives[id] = sphere
+        this.primitive_ids.push(id)
 
-        return id;
+        return sphere;
     }
 
 
@@ -105,9 +108,9 @@ class Model {
         return this.blocks(keys())
     }
 
-    _genID(x,y,z) {
+    _genID(type,x,y,z) {
         this.primitive_counter ++
-        return "" +this.primitive_counter
+        return this.primitive_counter + " " + type 
     }
 }
 

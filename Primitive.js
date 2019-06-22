@@ -1,5 +1,6 @@
 class Primitive {
-    constructor(color, reflective) {
+    constructor(id, color, reflective) {
+        this.id = id
         this.color = new THREE.Color(color);
         this.reflective = reflective;
     }

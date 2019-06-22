@@ -35,6 +35,7 @@ class Camera {
         this.back_color = back_color;
     }
 
+    //look_at get/set
     get look_at_x() {
         return this.look_at.x
     }
@@ -56,7 +57,29 @@ class Camera {
     set look_at_z(z) {
         this.look_at.z = z
         this.THREEcamera.lookAt(this.look_at)
+    }
+    //position get/set
+    get x() {
+        return this.THREEcamera.position.x
+    }
+    get y() {
+        return this.THREEcamera.position.y
+    }
+    get z() {
+        return this.THREEcamera.position.z
+    }
+    set x(x) {
+        this.THREEcamera.position.x = x
+        this.THREEcamera.lookAt(this.look_at)
+    }
+    set y(y) {
+        this.THREEcamera.position.y = y
+        this.THREEcamera.lookAt(this.look_at)
 
+    }
+    set z(z) {
+        this.THREEcamera.position.z = z
+        this.THREEcamera.lookAt(this.look_at)
     }
 
     resize(width, height) {

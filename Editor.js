@@ -94,16 +94,16 @@ class Editor {
         gui_new_primitive.open();
 
         var gui_camera = this.gui.addFolder('camera')
-        gui_camera.add(this.camera.THREEcamera.position, "x").step(0.5)
-        gui_camera.add(this.camera.THREEcamera.position, "y").step(0.5)
-        gui_camera.add(this.camera.THREEcamera.position, "z").step(0.5)
+        gui_camera.add(this.camera, "x").step(0.5)
+        gui_camera.add(this.camera, "y").step(0.5)
+        gui_camera.add(this.camera, "z").step(0.5)
         gui_camera.add(this.camera, "look_at_x").step(0.5)
         gui_camera.add(this.camera, "look_at_x").step(0.5)
         gui_camera.add(this.camera, "look_at_z").step(0.5)
         gui_camera.open();
 
-        
-
+         
+        this.primitive_gui = new dat.GUI();
         
         this.isDown = false;
         this.isDrag = false;
@@ -117,11 +117,13 @@ class Editor {
 
     addNewPrimitive() {
         var vec = new THREE.Vector3(this.new_primitive.x, this.new_primitive.y, this.new_primitive.z);
+        var primitive 
         if (this.new_primitive.type == 'sphere') {
-            this.model.addSphere(vec, this.new_primitive.r, this.new_primitive.color, this.new_primitive.reflective)
+           primitive = this.model.addSphere(vec, this.new_primitive.r, this.new_primitive.color, this.new_primitive.reflective)
         } else if (this.new_primitive.type == 'plane') {
-           this.model.addPlane(vec, this.new_primitive.r, this.new_primitive.color, this.new_primitive.reflective)
+            primitive = this.model.addPlane(vec, this.new_primitive.r, this.new_primitive.color, this.new_primitive.reflective)
         }
+        this.model_gui.add(primitive, "id")
     }
 
     load_default_model() {
@@ -130,31 +132,31 @@ class Editor {
         var color = "#ff0000"
         var refl = false
         this.model.addSphere(vec, r, color, refl)
-
+        
         var vec = new THREE.Vector3(2, 0, 2);
         var r = 1 
         var color = "#00ff00"
         var refl = false
         this.model.addSphere(vec, r, color, refl)
-
+        
         var vec = new THREE.Vector3(0, 2, 2);
         var r = 1 
         var color = "#0000ff"
         var refl = false
         this.model.addSphere(vec, r, color, refl)
-
+        
         var vec = new THREE.Vector3(0, -2, 2);
         var r = 1 
         var color = "#ff00ff"
         var refl = true
         this.model.addSphere(vec, r, color, refl)
-
+        
         var vec = new THREE.Vector3(0, 0, 1);
         var r = 0 
         var color = "#ffffff"
         var refl = false
         this.model.addPlane(vec, r, color, refl)
-
+        
     }
 
     resize() {
