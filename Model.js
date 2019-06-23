@@ -31,7 +31,7 @@ class Model {
         if (labda_min != undefined) {
             hit_point = eye_ray.evaluate(labda_min)
 
-            if (hit_primitive.is_reflective()) {
+            if (hit_primitive.texture.is_reflective()) {
                 // Notation as in https://math.stackexchange.com/a/13263
                 var d = eye_ray.direction;
                 var n = hit_primitive.get_normal(hit_point);
@@ -79,17 +79,17 @@ class Model {
 
     }
 
-    addPlane(normal, distance, color, reflective) {
+    addPlane(normal, distance, texture) {
         var id = this._genID(normal.x,normal.y,normal.z)
-        var plane = new Plane(id, this.three_scene, normal, distance,color, reflective)
+        var plane = new Plane(id, this.three_scene, normal, distance, texture)
         this.primitives[id] = plane
 
         return plane;
     }
 
-    addSphere(pos, radius, color, reflective) {
+    addSphere(pos, radius, texture) {
         var id = this._genID( pos.x, pos.y, pos.z)
-        var sphere = new Sphere(id, this.three_scene, pos, radius, color, reflective)
+        var sphere = new Sphere(id, this.three_scene, pos, radius, texture)
         this.primitives[id] = sphere
 
         return sphere;

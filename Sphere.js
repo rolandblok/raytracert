@@ -1,10 +1,9 @@
 class Sphere extends Primitive {
-    constructor (id, three_scene, pos, _radius, color, reflective) {
-        super(id, color, reflective);
+    constructor (id, three_scene, pos, _radius, texture) {
+        super(id, texture);
         this.type = "sphere"
         var geometry = new THREE.SphereGeometry( 1, 15, 15  );
-        var material = new THREE.MeshPhongMaterial( {color:color} );
-        this.mesh = new THREE.Mesh( geometry, material );
+        this.mesh = new THREE.Mesh( geometry, this.texture.three_material );
         this.mesh.position.set(pos.x, pos.y, pos.z)
         this.mesh.scale.x = _radius
         this.mesh.scale.y = _radius

@@ -105,7 +105,8 @@ class Editor {
 
          
         this.gui_edit = new dat.GUI();
-        this.gui_primitive_edit_fldr = this.gui_edit.addFolder("select")
+        this.gui_primitive_edit_fldr = this.gui_edit.addFolder("primitive")
+        this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
         
         this.isDown = false;
         this.isDrag = false;
@@ -118,46 +119,53 @@ class Editor {
     }
 
     addNewPrimitive() {
-        var vec = new THREE.Vector3(this.new_primitive.x, this.new_primitive.y, this.new_primitive.z);
-        var primitive 
+        let vec = new THREE.Vector3(this.new_primitive.x, this.new_primitive.y, this.new_primitive.z);
+        let primitive 
         if (this.new_primitive.type == 'sphere') {
-           primitive = this.model.addSphere(vec, this.new_primitive.r, this.new_primitive.color, this.new_primitive.reflective)
+           let texture = new Texture(this.new_primitive.color, this.new_primitive.reflective)
+           primitive = this.model.addSphere(vec, this.new_primitive.r, texture)
         } else if (this.new_primitive.type == 'plane') {
-            primitive = this.model.addPlane(vec, this.new_primitive.r, this.new_primitive.color, this.new_primitive.reflective)
+            let texture = new Texture(this.new_primitive.color, this.new_primitive.reflective)
+            primitive = this.model.addPlane(vec, this.new_primitive.r, texture)
         }
         this.model_gui.add(primitive, "id")
     }
 
     load_default_model() {
-        var vec = new THREE.Vector3(-2, 0, 2);
-        var r = 1.5
-        var color = "#ff0000"
-        var refl = false
-        this.model.addSphere(vec, r, color, refl)
+        let vec = new THREE.Vector3(-2, 0, 2);
+        let r = 1.5
+        let color = "#ff0000"
+        let refl = false
+        let texture = new Texture(color, refl)
+        this.model.addSphere(vec, r, texture)
         
-        var vec = new THREE.Vector3(2, 0, 2);
-        var r = 0.5 
-        var color = "#00ff00"
-        var refl = false
-        this.model.addSphere(vec, r, color, refl)
+        vec = new THREE.Vector3(2, 0, 2);
+        r = 0.5 
+        color = "#00ff00"
+        refl = false
+        texture = new Texture(color, refl)
+        this.model.addSphere(vec, r, texture)
         
-        var vec = new THREE.Vector3(0, 2, 2);
-        var r = 1 
-        var color = "#0000ff"
-        var refl = false
-        this.model.addSphere(vec, r, color, refl)
+        vec = new THREE.Vector3(0, 2, 2);
+        r = 1 
+        color = "#0000ff"
+        refl = false
+        texture = new Texture(color, refl)
+        this.model.addSphere(vec, r,texture)
         
-        var vec = new THREE.Vector3(0, -2, 2);
-        var r = 1 
-        var color = "#ff00ff"
-        var refl = true
-        this.model.addSphere(vec, r, color, refl)
+        vec = new THREE.Vector3(0, -2, 2);
+        r = 1 
+        color = "#ff00ff"
+        refl = true
+        texture = new Texture(color, refl)
+        this.model.addSphere(vec, r, texture)
         
-        var vec = new THREE.Vector3(0, 0, 1);
-        var r = 0 
-        var color = "#ffffff"
-        var refl = false
-        this.model.addPlane(vec, r, color, refl)
+        vec = new THREE.Vector3(0, 0, 1);
+        r = 0 
+        color = "#ffffff"
+        refl = false
+        texture = new Texture(color, refl)
+        this.model.addPlane(vec, r, texture)
         
     }
 
@@ -229,22 +237,32 @@ class Editor {
             }
 
             if (object_ids.length > 0) {
-                let sel_prim = this.model.getPrimitive(object_ids[0])
-                console.log("selected object : " + object_ids[0] + " type: " + sel_prim.type)
+                let sel_primitive = this.model.getPrimitive(object_ids[0])
+                console.log("selected object : " + object_ids[0] + " type: " + sel_primitive.type)
 
                 this.gui_edit.removeFolder(this.gui_primitive_edit_fldr)
-                this.gui_primitive_edit_fldr = this.gui_edit.addFolder(sel_prim.type)
+                this.gui_primitive_edit_fldr = this.gui_edit.addFolder(sel_primitive.type)
 
-                if (sel_prim.type == "sphere") {
-                    this.gui_primitive_edit_fldr.add(sel_prim, "x", -9, 9).step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_prim, "y", -9, 9).step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_prim, "z", -9, 9).step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_prim, "radius", 0.1).step(0.1)
-                } else if (sel_prim.type == "plnase") {
+                if (sel_primitive.type == "sphere") {
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "x", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "y", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "z", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "radius", 0.1).step(0.1)
+            
+                } else if (sel_primitive.type == "plane") {
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "normal_x", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "normal_y", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "normal_z", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "distance_to_origin" ).step(0.1)
                     //todo
                 }
 
+                this.gui_edit.removeFolder(this.gui_texture_edit_fldr)
+                this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
+                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color")
+                this.gui_texture_edit_fldr.add(sel_primitive.texture, "reflective")
 
+                this.gui_texture_edit_fldr.open()
                 this.gui_primitive_edit_fldr.open()
             }
         
