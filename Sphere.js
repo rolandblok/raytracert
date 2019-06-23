@@ -1,21 +1,23 @@
 class Sphere extends Primitive {
-    constructor (id, three_scene, pos, radius, color, reflective) {
+    constructor (id, three_scene, pos, _radius, color, reflective) {
         super(id, color, reflective);
-        this.p = pos
-        this.radius = radius;
-        var geometry = new THREE.SphereGeometry( this.radius, 15, 15  );
+        this.type = "sphere"
+        var geometry = new THREE.SphereGeometry( 1, 15, 15  );
         var material = new THREE.MeshPhongMaterial( {color:color} );
-        this.mesh_sphere = new THREE.Mesh( geometry, material );
-        this.mesh_sphere.position.set(this.p.x, this.p.y, this.p.z)
-        this.mesh_sphere.name = id;
+        this.mesh = new THREE.Mesh( geometry, material );
+        this.mesh.position.set(pos.x, pos.y, pos.z)
+        this.mesh.scale.x = _radius
+        this.mesh.scale.y = _radius
+        this.mesh.scale.z = _radius
+        this.mesh.name = id;
 
-        three_scene.add( this.mesh_sphere )
+        three_scene.add( this.mesh )
     }
 
     hit(ray)
     {
-        var R = this.radius ;
-        var center = this.p;
+        var R = this.mesh.scale.x ;
+        var center = this.mesh.position;
         var origin = ray.origin;
         var direction = ray.direction;
 
@@ -38,7 +40,37 @@ class Sphere extends Primitive {
     }
 
     get_normal(hit_point) {
-        var normal = hit_point.clone().sub(this.p);
+        var center = this.mesh.position;
+        var normal = hit_point.clone().sub(center);
         return normal.normalize();
     }
+
+    //get/set position
+    get x() {
+        return this.mesh.position.x
+    }
+    get y() {
+        return this.mesh.position.y
+    }
+    get z() {
+        return this.mesh.position.z
+    }
+    set x(x) {
+        this.mesh.position.x = x
+    }
+    set y(y) {
+        this.mesh.position.y = y
+    }
+    set z(z) {
+        this.mesh.position.z = z
+    }
+    get radius() {
+        return this.mesh.scale.x
+    }
+    set radius(R) {
+        this.mesh.scale.x = R
+        this.mesh.scale.y = R
+        this.mesh.scale.z = R
+    }
+
 }

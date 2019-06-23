@@ -1,17 +1,18 @@
 class Plane extends Primitive {
     constructor (id, three_scene, normal, distance_to_origin, color, reflective) {
         super(id, color, reflective);
+        this.type = "plane"
         this.normal = normal.clone().normalize();
         this.distance_to_origin = distance_to_origin
         var geometry = new THREE.PlaneGeometry( 200, 200, 32, 32  );
         var material = new THREE.MeshPhongMaterial( {color:color} );
-        this.mesh_plane = new THREE.Mesh( geometry, material );
+        this.mesh = new THREE.Mesh( geometry, material );
 
         var position = normal.clone().multiplyScalar(distance_to_origin);
-        this.mesh_plane.position.set(position.x, position.y, position.z)
-        this.mesh_plane.lookAt(position.clone().add(this.normal))
-        this.mesh_plane.name = id
-        three_scene.add( this.mesh_plane )
+        this.mesh.position.set(position.x, position.y, position.z)
+        this.mesh.lookAt(position.clone().add(this.normal))
+        this.mesh.name = id
+        three_scene.add( this.mesh )
     }
 
     hit(ray)

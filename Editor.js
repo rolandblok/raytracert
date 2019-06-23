@@ -104,7 +104,8 @@ class Editor {
         gui_camera.open();
 
          
-        this.primitive_gui = new dat.GUI();
+        this.gui_edit = new dat.GUI();
+        this.gui_primitive_edit_fldr = this.gui_edit.addFolder("select")
         
         this.isDown = false;
         this.isDrag = false;
@@ -129,13 +130,13 @@ class Editor {
 
     load_default_model() {
         var vec = new THREE.Vector3(-2, 0, 2);
-        var r = 1 
+        var r = 1.5
         var color = "#ff0000"
         var refl = false
         this.model.addSphere(vec, r, color, refl)
         
         var vec = new THREE.Vector3(2, 0, 2);
-        var r = 1 
+        var r = 0.5 
         var color = "#00ff00"
         var refl = false
         this.model.addSphere(vec, r, color, refl)
@@ -211,22 +212,41 @@ class Editor {
     }
 
     onmouseup(e) {
-        var rect = this.canvas_gl.getBoundingClientRect();
-        var x_pos = e.clientX - rect.left
-        var y_pos = e.clientY - rect.top
+        let rect = this.canvas_gl.getBoundingClientRect();
+        let x_pos = e.clientX - rect.left
+        let y_pos = e.clientY - rect.top
         console.log("click "+ x_pos +" "+  y_pos)
         
             // some raycasting to deterimine the active tile.
             this.mouse_position.x = ( x_pos / this.canvas_gl.width ) * 2 - 1;
             this.mouse_position.y = - ( y_pos / this.canvas_gl.height ) * 2 + 1;
             this.raycaster.setFromCamera( this.mouse_position, this.camera.THREEcamera);
-            var intersects = this.raycaster.intersectObjects( this.three_scene.children );
+            let intersects = this.raycaster.intersectObjects( this.three_scene.children );
     
-            var objects_ids =  intersects.map(x => x.object.name);
-            for (let object_id of objects_ids) {
-                console.log("id"+ object_id)
+            let object_ids =  intersects.map(x => x.object.name);
+            for (let object_id of object_ids) {
+                console.log("id "+ object_id )
             }
-                
+
+            if (object_ids.length > 0) {
+                let sel_prim = this.model.getPrimitive(object_ids[0])
+                console.log("selected object : " + object_ids[0] + " type: " + sel_prim.type)
+
+                this.gui_edit.removeFolder(this.gui_primitive_edit_fldr)
+                this.gui_primitive_edit_fldr = this.gui_edit.addFolder(sel_prim.type)
+
+                if (sel_prim.type == "sphere") {
+                    this.gui_primitive_edit_fldr.add(sel_prim, "x", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_prim, "y", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_prim, "z", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_prim, "radius", 0.1).step(0.1)
+                } else if (sel_prim.type == "plnase") {
+                    //todo
+                }
+
+
+                this.gui_primitive_edit_fldr.open()
+            }
         
     
     }
