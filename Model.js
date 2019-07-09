@@ -32,7 +32,7 @@ class Model {
         if (labda_min != undefined) {
             hit_point = eye_ray.evaluate(labda_min)
 
-            var ambient_color = hit_primitive.texture.ambientColor;
+            var ambient_color = new Color(hit_primitive.texture.ambientColor);
 
             var diffuse_color = new THREE.Color("black");
             // vind ray hitpoint tot lamp --> labda
@@ -52,7 +52,7 @@ class Model {
 
                 // als geen obstructie
                 if (!obstruction_detected) {
-                    var color = hit_primitive.shade(inv_light_ray)
+                    var color = hit_primitive.shade(inv_light_ray, light.three_color)
                     diffuse_color = diffuse_color.add(color)
                 }
 

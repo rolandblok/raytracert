@@ -130,10 +130,12 @@ class Editor {
         this.gui_light_edit_lights = new Set()
         this.gui_light_edit_lights.light_nr = 0
         this.gui_light_edit_lights.gui = gui_light_edit.add(this.gui_light_edit_lights, "light_nr", [0])
-        this.gui_light_edit_lights.gui.onChange(this.guiLighSelected(value))
+        //this.gui_light_edit_lights.gui.onChange(this.guiLighSelected(value))
         gui_light_edit.add(this.model.lights[0], "x").step(0.5)
         gui_light_edit.add(this.model.lights[0], "y").step(0.5)
         gui_light_edit.add(this.model.lights[0], "z").step(0.5)
+        gui_light_edit.addColor(this.model.lights[0], "color")
+
         gui_light_edit.open();
 
         this.isDown = false;
@@ -170,7 +172,7 @@ class Editor {
         let color = "#ff0000"
         let refl = false
         let checker = false
-        let texture = new Texture(color, color,  refl, checker)
+        let texture = new Texture(color, color,  refl, checker, 0.5)
         this.model.addSphere(vec, r, texture)
         
         vec = new THREE.Vector3(2, 0, 2);

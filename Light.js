@@ -1,9 +1,8 @@
 class Light {
     constructor(three_scene, location, color_arg) {
         this.loc = location
-        this._color = color_arg
 
-        this.three_light = new THREE.PointLight( 0xffffff, 1, 0 );
+        this.three_light = new THREE.PointLight( color_arg, 1, 0 );
         this.three_light.position.set(location.x, location.y, location.z)
         
         three_scene.add( this.three_light );
@@ -32,11 +31,13 @@ class Light {
         this.three_light.position.z = z
     }
     get color() {
-        return this._color;
+        return this.three_light.color.getHex()
     }
     set color(color_arg) {
-        return this._color = color_arg;
+        this.three_light.color.setHex(color_arg)
     }
-    
+    get three_color() {
+        return this.three_light.color;
+    }
 
 }
