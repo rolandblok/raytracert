@@ -3,7 +3,7 @@ class Sphere extends Primitive {
         super(id, texture);
         this.type = "sphere"
         var geometry = new THREE.SphereGeometry( 1, 15, 15  );
-        this.mesh = new THREE.Mesh( geometry, this.texture.three_material );
+        this.mesh = new THREE.Mesh( geometry, this.texture._three_material );
         this.mesh.position.set(pos.x, pos.y, pos.z)
         this.mesh.scale.x = _radius
         this.mesh.scale.y = _radius

@@ -8,6 +8,7 @@ class Model {
     }
 
     raytrace(eye_ray, depth){
+        let pixel_color = new THREE.Color("black")
         
         if (depth <= 0){
             return new THREE.Color("black");
@@ -42,7 +43,6 @@ class Model {
                 return this.raytrace(new_ray, depth-1);
             }
             else {
-                var total_color = new THREE.Color("black")
 
                 // vind ray hitpoint tot lamp --> labda
                 for(var light of this.lights) {
@@ -62,12 +62,12 @@ class Model {
                     // als geen obstructie
                     if (!obstruction_detected) {
                         var color = hit_primitive.shade(inv_light_ray)
-                        total_color = total_color.add(color)
+                        pixel_color = pixel_color.add(color)
                     }
 
                 }
 
-                return total_color;
+                return pixel_color;
             }
         }
 

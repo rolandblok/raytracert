@@ -11,4 +11,24 @@ class Light {
         three_scene.add(this.lighthelper)
         
     }
+
+    get x() {
+        return this.three_light.position.x
+    }
+    get y() {
+        return this.three_light.position.y
+    }
+    get z() {
+        return this.three_light.position.z
+    }
+    set x(x) {
+        this.three_light.position.x = x
+    }
+    set y(y) {
+        this.three_light.position.y = y
+    }
+    set z(z) {
+        this.three_light.position.z = z
+    }
+
 }
