@@ -166,7 +166,14 @@ class Editor {
         refl = false
         texture = new Texture(color, refl)
         this.model.addPlane(vec, r, texture)
-        
+
+        vec = new THREE.Vector3(0, 0, -1);
+        r = -10000 
+        color = "#2266ff"
+        refl = false
+        texture = new Texture(color, refl)
+        this.model.addPlane(vec, r, texture)
+                
     }
 
     resize() {
