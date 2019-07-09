@@ -38,6 +38,6 @@ class Texture {
     }
 
     get ambientColor() {
-        return this._three_material.color.clone().multiplyScalar(this.ambient_factor);
+        return this._three_material.color.clone().multiplyScalar(this._ambient_factor);
     }
 }
