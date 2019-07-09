@@ -1,6 +1,7 @@
 class Light {
-    constructor(three_scene, location) {
+    constructor(three_scene, location, color_arg) {
         this.loc = location
+        this._color = color_arg
 
         this.three_light = new THREE.PointLight( 0xffffff, 1, 0 );
         this.three_light.position.set(location.x, location.y, location.z)
@@ -30,5 +31,12 @@ class Light {
     set z(z) {
         this.three_light.position.z = z
     }
+    get color() {
+        return this._color;
+    }
+    set color(color_arg) {
+        return this._color = color_arg;
+    }
+    
 
 }

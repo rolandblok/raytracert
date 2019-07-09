@@ -74,8 +74,8 @@ class Model {
         return new THREE.Color("black");
     }
 
-    addLight(light) {
-        this.lights.push(new Light(this.three_scene, light))
+    addLight(light_pos, color) {
+        this.lights.push(new Light(this.three_scene, light_pos, color))
 
     }
 

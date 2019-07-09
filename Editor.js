@@ -46,7 +46,7 @@ class Editor {
 
         //lights
         var light1_pos = new THREE.Vector3( 20, 0, 20)
-        this.model.addLight(light1_pos)
+        this.model.addLight(light1_pos, "#ffffff")
         
         /*
         var light = new THREE.DirectionalLight( 0xffffff, 1 );
@@ -73,26 +73,6 @@ class Editor {
 
         gui_raytrace.add(this, "load_default_model")
 
-        var gui_new_primitive  = this.gui.addFolder('New primitive')
-        this.new_primitive = new Set()
-        this.new_primitive.type = 'sphere'
-        this.new_primitive.x = 0
-        this.new_primitive.y = 0
-        this.new_primitive.z = 0
-        this.new_primitive.r = 1
-        this.new_primitive.color = "#ffffff"
-        this.new_primitive.reflective = false
-        gui_new_primitive.add(this.new_primitive, "type", ['sphere', 'plane'])
-        gui_new_primitive.add(this.new_primitive, "x", -9, 9).step(0.1)
-        gui_new_primitive.add(this.new_primitive, "y", -9, 9).step(0.1)
-        gui_new_primitive.add(this.new_primitive, "z", -9, 9).step(0.1)
-        gui_new_primitive.add(this.new_primitive, "r", -9, 9).step(0.1)
-        gui_new_primitive.addColor(this.new_primitive, "color")
-        gui_new_primitive.add(this.new_primitive, "reflective")
-
-        gui_new_primitive.add(this, "addNewPrimitive")
-
-        gui_new_primitive.open();
 
         var gui_camera = this.gui.addFolder('camera')
         gui_camera.add(this.camera, "x").step(0.5)
@@ -103,11 +83,39 @@ class Editor {
         gui_camera.add(this.camera, "look_at_z").step(0.5)
         gui_camera.open();
 
-        var gui_light = this.gui.addFolder('light')
-        gui_light.add(this.light, "x").step(0.5)
-        gui_light.add(this.light, "y").step(0.5)
-        gui_light.add(this.light, "z").step(0.5)
-        gui_light.open();
+
+        var gui_new_primitive  = this.gui.addFolder('New primitive')
+        this.new_primitive = new Set()
+        this.new_primitive.type = 'sphere'
+        this.new_primitive.x = 0
+        this.new_primitive.y = 0
+        this.new_primitive.z = 0
+        this.new_primitive.r = 1
+        this.new_primitive.color = "#ffffff"
+        this.new_primitive.reflective = false
+        gui_new_primitive.add(this.new_primitive, "type", ['sphere', 'plane'])
+        gui_new_primitive.add(this.new_primitive, "x").step(0.1)
+        gui_new_primitive.add(this.new_primitive, "y").step(0.1)
+        gui_new_primitive.add(this.new_primitive, "z").step(0.1)
+        gui_new_primitive.add(this.new_primitive, "r").step(0.1)
+        gui_new_primitive.addColor(this.new_primitive, "color")
+        gui_new_primitive.add(this.new_primitive, "reflective")
+        gui_new_primitive.add(this, "addNewPrimitive")
+        gui_new_primitive.open()
+
+        this.new_light = new Set()
+        this.new_light.x = 10
+        this.new_light.y = 10
+        this.new_light.z = 10
+        this.new_light.color = "#ffffff"
+        var gui_new_light  = this.gui.addFolder('New Light')
+        gui_new_light.add(this.new_light, "x").step(0.1)
+        gui_new_light.add(this.new_light, "y").step(0.1)
+        gui_new_light.add(this.new_light, "z").step(0.1)
+        gui_new_light.addColor(this.new_light, "color")
+        gui_new_light.add(this, "addNewLight")
+
+        gui_new_light.open();
 
          
         
@@ -115,6 +123,15 @@ class Editor {
         this.gui_primitive_edit_fldr = this.gui_edit.addFolder("primitive")
         this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
         
+        let light_nrs = _.range(this.model.lights.length)
+        let light_nrs_str = light_nrs.map(x => "" + x)
+        
+        var gui_light = this.gui_edit.addFolder('light')
+        gui_light.add(this.model.lights[0], "x").step(0.5)
+        gui_light.add(this.model.lights[0], "y").step(0.5)
+        gui_light.add(this.model.lights[0], "z").step(0.5)
+        gui_light.open();
+
         this.isDown = false;
         this.isDrag = false;
         this.mouse_down_position = {}
@@ -136,6 +153,12 @@ class Editor {
             primitive = this.model.addPlane(vec, this.new_primitive.r, texture)
         }
     }
+
+    addNewLight() {
+        let pos = new THREE.Vector3(this.new_light.x, this.new_light.y, this.new_light.z);
+        this.model.addLight(pos, this.new_light.color)
+    }
+
 
     load_default_model() {
         let vec = new THREE.Vector3(-2, 0, 2);
