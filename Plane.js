@@ -6,7 +6,7 @@ class Plane extends Primitive {
         this._distance_to_origin = distance_to_origin_arg
 
         var geometry = new THREE.PlaneGeometry( 200, 200, 32, 32  );
-        this.mesh = new THREE.Mesh( geometry, texture.three_material );
+        this.mesh = new THREE.Mesh( geometry, texture._three_material );
 
         this._updatePositionMesh()
 

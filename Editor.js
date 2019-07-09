@@ -103,7 +103,14 @@ class Editor {
         gui_camera.add(this.camera, "look_at_z").step(0.5)
         gui_camera.open();
 
+        var gui_light = this.gui.addFolder('light')
+        gui_light.add(this.light, "x").step(0.5)
+        gui_light.add(this.light, "y").step(0.5)
+        gui_light.add(this.light, "z").step(0.5)
+        gui_light.open();
+
          
+        
         this.gui_edit = new dat.GUI();
         this.gui_primitive_edit_fldr = this.gui_edit.addFolder("primitive")
         this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
@@ -128,7 +135,6 @@ class Editor {
             let texture = new Texture(this.new_primitive.color, this.new_primitive.reflective)
             primitive = this.model.addPlane(vec, this.new_primitive.r, texture)
         }
-        this.model_gui.add(primitive, "id")
     }
 
     load_default_model() {
@@ -136,35 +142,40 @@ class Editor {
         let r = 1.5
         let color = "#ff0000"
         let refl = false
-        let texture = new Texture(color, refl)
+        let checker = false
+        let texture = new Texture(color, color,  refl, checker)
         this.model.addSphere(vec, r, texture)
         
         vec = new THREE.Vector3(2, 0, 2);
         r = 0.5 
         color = "#00ff00"
         refl = false
-        texture = new Texture(color, refl)
+        checker = false
+        texture = new Texture(color, color,  refl, checker)
         this.model.addSphere(vec, r, texture)
         
         vec = new THREE.Vector3(0, 2, 2);
         r = 1 
         color = "#0000ff"
         refl = false
-        texture = new Texture(color, refl)
+        checker = false
+        texture = new Texture(color, color,  refl, checker)
         this.model.addSphere(vec, r,texture)
         
         vec = new THREE.Vector3(0, -2, 2);
         r = 1 
         color = "#ff00ff"
         refl = true
-        texture = new Texture(color, refl)
+        checker = false
+        texture = new Texture(color, color,  refl, checker)
         this.model.addSphere(vec, r, texture)
         
         vec = new THREE.Vector3(0, 0, 1);
         r = 0 
         color = "#ffffff"
         refl = false
-        texture = new Texture(color, refl)
+        checker = false
+        texture = new Texture(color, color,  refl, checker)
         this.model.addPlane(vec, r, texture)
 
         vec = new THREE.Vector3(0, 0, -1);
@@ -266,8 +277,10 @@ class Editor {
 
                 this.gui_edit.removeFolder(this.gui_texture_edit_fldr)
                 this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
-                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color")
+                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color1")
+                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color2")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "reflective")
+                this.gui_texture_edit_fldr.add(sel_primitive.texture, "checker")
 
                 this.gui_texture_edit_fldr.open()
                 this.gui_primitive_edit_fldr.open()
