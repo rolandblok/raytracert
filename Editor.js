@@ -103,13 +103,7 @@ class Editor {
         gui_camera.add(this.camera, "look_at_z").step(0.5)
         gui_camera.open();
 
-        var gui_light = this.gui.addFolder('light')
-        gui_light.add(this.light, "x").step(0.5)
-        gui_light.add(this.light, "y").step(0.5)
-        gui_light.add(this.light, "z").step(0.5)
-        gui_light.open();
-
-         
+        
         
         this.gui_edit = new dat.GUI();
         this.gui_primitive_edit_fldr = this.gui_edit.addFolder("primitive")
@@ -129,10 +123,10 @@ class Editor {
         let vec = new THREE.Vector3(this.new_primitive.x, this.new_primitive.y, this.new_primitive.z);
         let primitive 
         if (this.new_primitive.type == 'sphere') {
-           let texture = new Texture(this.new_primitive.color, this.new_primitive.reflective)
+           let texture = new Texture(this.new_primitive.color, this.new_primitive.color, this.new_primitive.reflective)
            primitive = this.model.addSphere(vec, this.new_primitive.r, texture)
         } else if (this.new_primitive.type == 'plane') {
-            let texture = new Texture(this.new_primitive.color, this.new_primitive.reflective)
+            let texture = new Texture(this.new_primitive.color, this.new_primitive.color, this.new_primitive.reflective)
             primitive = this.model.addPlane(vec, this.new_primitive.r, texture)
         }
     }
@@ -182,7 +176,7 @@ class Editor {
         r = -10000 
         color = "#2266ff"
         refl = false
-        texture = new Texture(color, refl)
+        texture = new Texture(color, color, refl, false, 1.0)
         this.model.addPlane(vec, r, texture)
                 
     }

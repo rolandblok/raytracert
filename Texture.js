@@ -1,10 +1,10 @@
 class Texture {
-    constructor (color1_arg, color2_arg, reflective_arg, checker_arg) {
+    constructor (color1_arg, color2_arg, reflective_arg, checker_arg=false, ambient_factor = 0.0) {
         this._reflective = reflective_arg;
         this._three_material = new THREE.MeshPhongMaterial( {color:color1_arg} );
         this._color2 = color2_arg;
         this._checker = checker_arg;
-        
+        this._ambient_factor = ambient_factor;
     }
 
     is_reflective() {
@@ -37,4 +37,7 @@ class Texture {
         this._color2 = color_arg
     }
 
+    get ambientColor() {
+        return this._three_material.color.clone().multiplyScalar(this.ambient_factor);
+    }
 }
