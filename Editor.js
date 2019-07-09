@@ -117,20 +117,24 @@ class Editor {
 
         gui_new_light.open();
 
-         
+
         
         this.gui_edit = new dat.GUI();
         this.gui_primitive_edit_fldr = this.gui_edit.addFolder("primitive")
         this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
         
-        let light_nrs = _.range(this.model.lights.length)
-        let light_nrs_str = light_nrs.map(x => "" + x)
+       // let light_nrs = _.range(this.model.lights.length)
+       // let light_nrs_str = light_nrs.map(x => "" + x)
         
-        var gui_light = this.gui_edit.addFolder('light')
-        gui_light.add(this.model.lights[0], "x").step(0.5)
-        gui_light.add(this.model.lights[0], "y").step(0.5)
-        gui_light.add(this.model.lights[0], "z").step(0.5)
-        gui_light.open();
+        var gui_light_edit = this.gui_edit.addFolder('light')
+        this.gui_light_edit_lights = new Set()
+        this.gui_light_edit_lights.light_nr = 0
+        this.gui_light_edit_lights.gui = gui_light_edit.add(this.gui_light_edit_lights, "light_nr", [0])
+        this.gui_light_edit_lights.gui.onChange(this.guiLighSelected(value))
+        gui_light_edit.add(this.model.lights[0], "x").step(0.5)
+        gui_light_edit.add(this.model.lights[0], "y").step(0.5)
+        gui_light_edit.add(this.model.lights[0], "z").step(0.5)
+        gui_light_edit.open();
 
         this.isDown = false;
         this.isDrag = false;
@@ -146,10 +150,10 @@ class Editor {
         let vec = new THREE.Vector3(this.new_primitive.x, this.new_primitive.y, this.new_primitive.z);
         let primitive 
         if (this.new_primitive.type == 'sphere') {
-           let texture = new Texture(this.new_primitive.color, this.new_primitive.reflective)
+           let texture = new Texture(this.new_primitive.color, this.new_primitive.color, this.new_primitive.reflective)
            primitive = this.model.addSphere(vec, this.new_primitive.r, texture)
         } else if (this.new_primitive.type == 'plane') {
-            let texture = new Texture(this.new_primitive.color, this.new_primitive.reflective)
+            let texture = new Texture(this.new_primitive.color, this.new_primitive.color, this.new_primitive.reflective)
             primitive = this.model.addPlane(vec, this.new_primitive.r, texture)
         }
     }
@@ -200,7 +204,14 @@ class Editor {
         checker = false
         texture = new Texture(color, color,  refl, checker)
         this.model.addPlane(vec, r, texture)
-        
+
+        vec = new THREE.Vector3(0, 0, -1);
+        r = -10000 
+        color = "#2266ff"
+        refl = false
+        texture = new Texture(color, color, refl, false, 1.0)
+        this.model.addPlane(vec, r, texture)
+                
     }
 
     resize() {
