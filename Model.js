@@ -80,7 +80,10 @@ class Model {
 
     addLight(light_pos, color) {
         this.lights.push(new Light(this.three_scene, light_pos, color))
-
+        return this.lights.length - 1
+    }
+    get no_lights() {
+        return this.lights.length
     }
 
     addPlane(normal, distance, texture) {

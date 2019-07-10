@@ -44,9 +44,6 @@ class Editor {
         this.renderer.setSize( window.innerHeight/2, window.innerHeight/2 );
         document.body.appendChild(this.renderer.domElement);
 
-        //lights
-        var light1_pos = new THREE.Vector3( 20, 0, 20)
-        this.model.addLight(light1_pos, "#ffffff")
         
         /*
         var light = new THREE.DirectionalLight( 0xffffff, 1 );
@@ -104,10 +101,10 @@ class Editor {
         gui_new_primitive.open()
 
         this.new_light = new Set()
-        this.new_light.x = 10
+        this.new_light.x = 0
         this.new_light.y = 10
         this.new_light.z = 10
-        this.new_light.color = "#ffffff"
+        this.new_light.color = "#ff0000"
         var gui_new_light  = this.gui.addFolder('New Light')
         gui_new_light.add(this.new_light, "x").step(0.1)
         gui_new_light.add(this.new_light, "y").step(0.1)
@@ -117,26 +114,16 @@ class Editor {
 
         gui_new_light.open();
 
-
         
         this.gui_edit = new dat.GUI();
         this.gui_primitive_edit_fldr = this.gui_edit.addFolder("primitive")
         this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
         
-       // let light_nrs = _.range(this.model.lights.length)
-       // let light_nrs_str = light_nrs.map(x => "" + x)
         
-        var gui_light_edit = this.gui_edit.addFolder('light')
-        this.gui_light_edit_lights = new Set()
-        this.gui_light_edit_lights.light_nr = 0
-        this.gui_light_edit_lights.gui = gui_light_edit.add(this.gui_light_edit_lights, "light_nr", [0])
-        //this.gui_light_edit_lights.gui.onChange(this.guiLighSelected(value))
-        gui_light_edit.add(this.model.lights[0], "x").step(0.5)
-        gui_light_edit.add(this.model.lights[0], "y").step(0.5)
-        gui_light_edit.add(this.model.lights[0], "z").step(0.5)
-        gui_light_edit.addColor(this.model.lights[0], "color")
+        this.gui_light_selector = new Set()
+        this.gui_light_selector.fldr = this.gui_edit.addFolder('light')
 
-        gui_light_edit.open();
+
 
         this.isDown = false;
         this.isDrag = false;
@@ -162,9 +149,33 @@ class Editor {
 
     addNewLight() {
         let pos = new THREE.Vector3(this.new_light.x, this.new_light.y, this.new_light.z);
-        this.model.addLight(pos, this.new_light.color)
+        let light_nr = this.model.addLight(pos, this.new_light.color)
+
+        this.gui_light_selector.light_nr = light_nr
+        let light_nrs = [...Array(this.model.no_lights).keys()];
+        if (typeof this.gui_light_selector.gui_dropdown !== 'undefined') {
+            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_dropdown )
+        }
+        this.gui_light_selector.gui_dropdown = this.gui_light_selector.fldr.add(this.gui_light_selector, "light_nr", light_nrs).onChange( this.lightSelect )
+
+        this.lightSelect()
+
     }
 
+    lightSelect() {
+        let light_nr = this.gui_light_selector.light_nr 
+        if (typeof this.gui_light_selector.gui_x !== 'undefined') {
+            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_x )
+            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_y )
+            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_z )
+            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_color )
+        }
+        this.gui_light_selector.gui_x = this.gui_light_selector.fldr.add(this.model.lights[light_nr], "x").step(0.5)
+        this.gui_light_selector.gui_y = this.gui_light_selector.fldr.add(this.model.lights[light_nr], "y").step(0.5)
+        this.gui_light_selector.gui_z = this.gui_light_selector.fldr.add(this.model.lights[light_nr], "z").step(0.5)
+        this.gui_light_selector.gui_color = this.gui_light_selector.fldr.addColor(this.model.lights[light_nr], "color")
+        this.gui_light_selector.fldr.open();
+    }
 
     load_default_model() {
         let vec = new THREE.Vector3(-2, 0, 2);
@@ -214,6 +225,11 @@ class Editor {
         texture = new Texture(color, color, refl, false, 1.0)
         this.model.addPlane(vec, r, texture)
                 
+        this.new_light.x = 20
+        this.new_light.y = 0
+        this.new_light.z = 20
+        this.new_light.color = "#ffffff"
+        this.addNewLight()
     }
 
     resize() {
@@ -308,6 +324,7 @@ class Editor {
                 this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
                 this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color1")
                 this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color2")
+                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "ambientColor")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "reflective")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "checker")
 

@@ -4,7 +4,7 @@ class Texture {
         this._three_material = new THREE.MeshPhongMaterial( {color:color1_arg} );
         this._color2 = color2_arg;
         this._checker = checker_arg;
-        this._ambient_factor = ambient_factor;
+        this._ambient_color =  this._three_material.color.clone().multiplyScalar(ambient_factor)
     }
 
     is_reflective() {
@@ -37,7 +37,10 @@ class Texture {
         this._color2 = color_arg
     }
 
+    set ambientColor(color_arg) {
+        this._ambient_color.setHex(color_arg)
+    }
     get ambientColor() {
-        return this._three_material.color.clone().multiplyScalar(this._ambient_factor);
+        return this._ambient_color.getHex();
     }
 }
