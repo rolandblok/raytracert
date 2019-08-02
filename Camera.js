@@ -6,6 +6,7 @@ class Camera {
         this.ortho_camera = ortho
         this.z_rotation = 0;
         this.look_at = look_at
+        this.ray_status = ""
 
         this.fov = 45
         
@@ -123,8 +124,12 @@ class Camera {
         var look_dir_n = this.look_at.clone().sub(this.THREEcamera.position).normalize()
         var look_left_n = this.THREEcamera.up.clone().cross(look_dir_n).normalize()
         var look_up_n = look_dir_n.clone().cross(look_left_n)
+        let no_pixels = width_pix * height_pix
+        let count_pixels = 0;
         for (let x = 0; x < width_pix; x++) {
             for (let y = 0; y < height_pix; y++){
+                count_pixels ++
+                this.ray_status = "" + count_pixels + " / " + no_pixels
                 var xx = 0.5 - (x/width_pix) 
                 var yy = 0.5 - (y/height_pix)
                 var dy = look_up_n.clone().multiplyScalar(yy)

@@ -2,9 +2,18 @@ class Model {
 
     constructor (three_scene) {
         this.primitives = {}
+        this.primitive_counter = 0 // needed for unique ids
+        this.lights = {}
+        this.three_scene = three_scene;
+    }
+
+    clear_model() {
+        while(this.three_scene.children.length > 0){ 
+            this.three_scene.remove(this.three_scene.children[0]); 
+        }
+        this.primitives = {}
         this.primitive_counter = 0
         this.lights = []
-        this.three_scene = three_scene;
     }
 
     raytrace(eye_ray, depth){

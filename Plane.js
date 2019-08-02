@@ -6,18 +6,18 @@ class Plane extends Primitive {
         this._distance_to_origin = distance_to_origin_arg
 
         var geometry = new THREE.PlaneGeometry( 200, 200, 32, 32  );
-        this.mesh = new THREE.Mesh( geometry, texture._three_material );
+        this.three_mesh = new THREE.Mesh( geometry, texture._three_material );
 
         this._updatePositionMesh()
 
-        this.mesh.name = id
-        three_scene.add( this.mesh )
+        this.three_mesh.name = id
+        three_scene.add( this.three_mesh )
     }
 
     _updatePositionMesh(){
         var position = this.normal.clone().multiplyScalar(this.distance_to_origin);
-        this.mesh.position.set(position.x, position.y, position.z)
-        this.mesh.lookAt(position.clone().add(this.normal))
+        this.three_mesh.position.set(position.x, position.y, position.z)
+        this.three_mesh.lookAt(position.clone().add(this.normal))
     }
 
     hit(ray)

@@ -3,20 +3,20 @@ class Sphere extends Primitive {
         super(id, texture);
         this.type = "sphere"
         var geometry = new THREE.SphereGeometry( 1, 15, 15  );
-        this.mesh = new THREE.Mesh( geometry, this.texture._three_material );
-        this.mesh.position.set(pos.x, pos.y, pos.z)
-        this.mesh.scale.x = _radius
-        this.mesh.scale.y = _radius
-        this.mesh.scale.z = _radius
-        this.mesh.name = id;
+        this.three_mesh = new THREE.Mesh( geometry, this.texture._three_material );
+        this.three_mesh.position.set(pos.x, pos.y, pos.z)
+        this.three_mesh.scale.x = _radius
+        this.three_mesh.scale.y = _radius
+        this.three_mesh.scale.z = _radius
+        this.three_mesh.name = id;
 
-        three_scene.add( this.mesh )
+        three_scene.add( this.three_mesh )
     }
 
     hit(ray)
     {
-        var R = this.mesh.scale.x ;
-        var center = this.mesh.position;
+        var R = this.three_mesh.scale.x ;
+        var center = this.three_mesh.position;
         var origin = ray.origin;
         var direction = ray.direction;
 
@@ -39,37 +39,37 @@ class Sphere extends Primitive {
     }
 
     get_normal(hit_point) {
-        var center = this.mesh.position;
+        var center = this.three_mesh.position;
         var normal = hit_point.clone().sub(center);
         return normal.normalize();
     }
 
     //get/set position
     get x() {
-        return this.mesh.position.x
+        return this.three_mesh.position.x
     }
     get y() {
-        return this.mesh.position.y
+        return this.three_mesh.position.y
     }
     get z() {
-        return this.mesh.position.z
+        return this.three_mesh.position.z
     }
     set x(x) {
-        this.mesh.position.x = x
+        this.three_mesh.position.x = x
     }
     set y(y) {
-        this.mesh.position.y = y
+        this.three_mesh.position.y = y
     }
     set z(z) {
-        this.mesh.position.z = z
+        this.three_mesh.position.z = z
     }
     get radius() {
-        return this.mesh.scale.x
+        return this.three_mesh.scale.x
     }
     set radius(R) {
-        this.mesh.scale.x = R
-        this.mesh.scale.y = R
-        this.mesh.scale.z = R
+        this.three_mesh.scale.x = R
+        this.three_mesh.scale.y = R
+        this.three_mesh.scale.z = R
     }
 
 }

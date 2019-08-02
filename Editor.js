@@ -65,10 +65,12 @@ class Editor {
         this.ray_trace_setting.height = 480
         gui_raytrace.add(this.ray_trace_setting, 'width')
         gui_raytrace.add(this.ray_trace_setting, 'height')
+        gui_raytrace.add(this, "load_default_model")
+        gui_raytrace.add(this, "clear_model")
         gui_raytrace.add(this, 'raytrace')
+        gui_raytrace.add(this.camera, "ray_status" ).listen()
         gui_raytrace.open();
 
-        gui_raytrace.add(this, "load_default_model")
 
 
         var gui_camera = this.gui.addFolder('camera')
@@ -100,16 +102,16 @@ class Editor {
         gui_new_primitive.add(this, "addNewPrimitive")
         gui_new_primitive.open()
 
+        var gui_new_light  = this.gui.addFolder('New Light')
         this.new_light = new Set()
         this.new_light.x = 0
         this.new_light.y = 10
         this.new_light.z = 10
         this.new_light.color = "#ff0000"
-        var gui_new_light  = this.gui.addFolder('New Light')
-        gui_new_light.add(this.new_light, "x").step(0.1)
-        gui_new_light.add(this.new_light, "y").step(0.1)
-        gui_new_light.add(this.new_light, "z").step(0.1)
-        gui_new_light.addColor(this.new_light, "color")
+        gui_new_light.add(this.new_light, "x").step(0.1).listen()
+        gui_new_light.add(this.new_light, "y").step(0.1).listen()
+        gui_new_light.add(this.new_light, "z").step(0.1).listen()
+        gui_new_light.addColor(this.new_light, "color").listen()
         gui_new_light.add(this, "addNewLight")
 
         gui_new_light.open();
@@ -118,12 +120,7 @@ class Editor {
         this.gui_edit = new dat.GUI();
         this.gui_primitive_edit_fldr = this.gui_edit.addFolder("primitive")
         this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
-        
-        
-        this.gui_light_selector = new Set()
-        this.gui_light_selector.fldr = this.gui_edit.addFolder('light')
-
-
+        this.gui_edit_light_fldrs = []
 
         this.isDown = false;
         this.isDrag = false;
@@ -151,33 +148,22 @@ class Editor {
         let pos = new THREE.Vector3(this.new_light.x, this.new_light.y, this.new_light.z);
         let light_nr = this.model.addLight(pos, this.new_light.color)
 
-        this.gui_light_selector.light_nr = light_nr
-        let light_nrs = [...Array(this.model.no_lights).keys()];
-        if (typeof this.gui_light_selector.gui_dropdown !== 'undefined') {
-            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_dropdown )
-        }
-        this.gui_light_selector.gui_dropdown = this.gui_light_selector.fldr.add(this.gui_light_selector, "light_nr", light_nrs).onChange( this.lightSelect )
+        this.gui_edit_light_fldrs[light_nr] = this.gui_edit.addFolder("light " + light_nr)
 
-        this.lightSelect()
-
+        this.gui_edit_light_fldrs[light_nr].gui_x = this.gui_edit_light_fldrs[light_nr].add(this.model.lights[light_nr], "x").step(0.5)
+        this.gui_edit_light_fldrs[light_nr].gui_y = this.gui_edit_light_fldrs[light_nr].add(this.model.lights[light_nr], "y").step(0.5)
+        this.gui_edit_light_fldrs[light_nr].gui_z = this.gui_edit_light_fldrs[light_nr].add(this.model.lights[light_nr], "z").step(0.5)
+        this.gui_edit_light_fldrs[light_nr].gui_color = this.gui_edit_light_fldrs[light_nr].addColor(this.model.lights[light_nr], "color")
+        this.gui_edit_light_fldrs[light_nr].open();
     }
 
-    lightSelect() {
-        let light_nr = this.gui_light_selector.light_nr 
-        if (typeof this.gui_light_selector.gui_x !== 'undefined') {
-            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_x )
-            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_y )
-            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_z )
-            this.gui_light_selector.fldr.remove( this.gui_light_selector.gui_color )
-        }
-        this.gui_light_selector.gui_x = this.gui_light_selector.fldr.add(this.model.lights[light_nr], "x").step(0.5)
-        this.gui_light_selector.gui_y = this.gui_light_selector.fldr.add(this.model.lights[light_nr], "y").step(0.5)
-        this.gui_light_selector.gui_z = this.gui_light_selector.fldr.add(this.model.lights[light_nr], "z").step(0.5)
-        this.gui_light_selector.gui_color = this.gui_light_selector.fldr.addColor(this.model.lights[light_nr], "color")
-        this.gui_light_selector.fldr.open();
+    clear_model() {
+        this.model.clear_model()
     }
 
     load_default_model() {
+        this.clear_model()
+
         let vec = new THREE.Vector3(-2, 0, 2);
         let r = 1.5
         let color = "#ff0000"
