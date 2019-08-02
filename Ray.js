@@ -3,6 +3,7 @@ class Ray {
         this._origin = origin;
         this._end_point = end_point
         this._direction = new THREE.Vector3().subVectors( end_point, origin );
+        this._direction_n = this._direction.clone().normalize();
     }
 
     get origin() {
@@ -15,6 +16,9 @@ class Ray {
 
     get direction() {
         return this._direction.clone()
+    }
+    get direction_n() {
+        return this._direction_n.clone()
     }
 
     evaluate(lambda) {

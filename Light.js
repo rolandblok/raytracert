@@ -1,15 +1,18 @@
 class Light {
-    constructor(three_scene, location, color_arg) {
-        this.loc = location
+    constructor(three_scene, position, color_arg) {
 
         this.three_light = new THREE.PointLight( color_arg, 1, 0 );
-        this.three_light.position.set(location.x, location.y, location.z)
+        this.three_light.position.set(position.x, position.y, position.z)
         
         three_scene.add( this.three_light );
         
         this.lighthelper = new THREE.PointLightHelper(this.three_light)
         three_scene.add(this.lighthelper)
         
+    }
+
+    get position() {
+        return this.three_light.position.clone()
     }
 
     get x() {

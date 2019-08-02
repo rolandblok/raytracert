@@ -46,8 +46,8 @@ class Model {
             var diffuse_color = new THREE.Color("black");
             // vind ray hitpoint tot lamp --> labda
             for(var light of this.lights) {
-                var light_ray = new Ray(light.loc, hit_point)
-                var inv_light_ray = new Ray(hit_point, light.loc)
+                var light_ray = new Ray(light.position, hit_point)
+                var inv_light_ray = new Ray(hit_point, light.position)
 
                 // zoek obstructies 
                 var obstruction_detected = false
@@ -61,7 +61,9 @@ class Model {
 
                 // als geen obstructie
                 if (!obstruction_detected) {
-                    var color = hit_primitive.shade(inv_light_ray, light.three_color)
+                    //var hit_point = inverse_light_ray.origin;
+                    var normal = hit_primitive.get_normal(hit_point);
+                    var color = hit_primitive.texture.shade(eye_ray, inv_light_ray, light.three_color, normal)
                     diffuse_color = diffuse_color.add(color)
                 }
 

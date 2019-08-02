@@ -65,8 +65,8 @@ class Editor {
         this.ray_trace_setting.height = 480
         gui_raytrace.add(this.ray_trace_setting, 'width')
         gui_raytrace.add(this.ray_trace_setting, 'height')
-        gui_raytrace.add(this, "load_default_model")
         gui_raytrace.add(this, "clear_model")
+        gui_raytrace.add(this, "load_default_model")
         gui_raytrace.add(this, 'raytrace')
         gui_raytrace.add(this.camera, "ray_status" ).listen()
         gui_raytrace.open();
@@ -108,10 +108,10 @@ class Editor {
         this.new_light.y = 10
         this.new_light.z = 10
         this.new_light.color = "#ff0000"
-        gui_new_light.add(this.new_light, "x").step(0.1).listen()
-        gui_new_light.add(this.new_light, "y").step(0.1).listen()
-        gui_new_light.add(this.new_light, "z").step(0.1).listen()
-        gui_new_light.addColor(this.new_light, "color").listen()
+        this.new_light.x_gui = gui_new_light.add(this.new_light, "x").step(0.1)
+        this.new_light.y_gui = gui_new_light.add(this.new_light, "y").step(0.1)
+        this.new_light.z_gui =  gui_new_light.add(this.new_light, "z").step(0.1)
+        this.new_light.c_gui = gui_new_light.addColor(this.new_light, "color").listen()
         gui_new_light.add(this, "addNewLight")
 
         gui_new_light.open();
@@ -164,15 +164,19 @@ class Editor {
     load_default_model() {
         this.clear_model()
 
-        let vec = new THREE.Vector3(-2, 0, 2);
+        //constructor (color1_arg, color2_arg, reflective_arg, checker_arg=false, ambient_factor = 0.0, phong = false, phong_size = 25) {
+    
+        //rode bal
+        let vec = new THREE.Vector3(-2, 0, 1.5);
         let r = 1.5
         let color = "#ff0000"
         let refl = false
         let checker = false
-        let texture = new Texture(color, color,  refl, checker, 0.5)
+        let texture = new Texture(color, color,  refl, checker, 0.5, true, 5)
         this.model.addSphere(vec, r, texture)
         
-        vec = new THREE.Vector3(2, 0, 2);
+        // groene bal
+        vec = new THREE.Vector3(2, 0, 0.5);
         r = 0.5 
         color = "#00ff00"
         refl = false
@@ -180,22 +184,25 @@ class Editor {
         texture = new Texture(color, color,  refl, checker)
         this.model.addSphere(vec, r, texture)
         
-        vec = new THREE.Vector3(0, 2, 2);
+        // blauwe bal
+        vec = new THREE.Vector3(0, 2, 1);
         r = 1 
         color = "#0000ff"
         refl = false
         checker = false
-        texture = new Texture(color, color,  refl, checker)
+        texture = new Texture(color, color,  refl, checker, 0.0, true, 80)
         this.model.addSphere(vec, r,texture)
         
-        vec = new THREE.Vector3(0, -2, 2);
-        r = 1 
-        color = "#ff00ff"
+        //spiegel bal 
+        vec = new THREE.Vector3(0, -4, 3);
+        r = 3 
+        color = "#000000"
         refl = true
         checker = false
         texture = new Texture(color, color,  refl, checker)
         this.model.addSphere(vec, r, texture)
         
+        // witte onder vlak 
         vec = new THREE.Vector3(0, 0, 1);
         r = 0 
         color = "#ffffff"
@@ -204,6 +211,16 @@ class Editor {
         texture = new Texture(color, color,  refl, checker)
         this.model.addPlane(vec, r, texture)
 
+        // spiegel achter
+        vec = new THREE.Vector3(1, 0, 0);
+        r = -8
+        color = "#000000"
+        refl = true
+        checker = false
+        texture = new Texture(color, color,  refl, checker)
+        this.model.addPlane(vec, r, texture)
+
+        //lucht
         vec = new THREE.Vector3(0, 0, -1);
         r = -10000 
         color = "#2266ff"
@@ -211,11 +228,20 @@ class Editor {
         texture = new Texture(color, color, refl, false, 1.0)
         this.model.addPlane(vec, r, texture)
                 
-        this.new_light.x = 20
-        this.new_light.y = 0
-        this.new_light.z = 20
+        this.new_light.x_gui.setValue(20)
+        this.new_light.y_gui.setValue(0)
+        this.new_light.z_gui.setValue(20)
         this.new_light.color = "#ffffff"
+        this.new_light.c_gui.setValue(this.new_light.color )
         this.addNewLight()
+
+        this.new_light.x_gui.setValue(0)
+        this.new_light.y_gui.setValue(20)
+        this.new_light.z_gui.setValue(40)
+        this.new_light.color = "#4499cc"
+        this.new_light.c_gui.setValue(this.new_light.color )
+        this.addNewLight()
+
     }
 
     resize() {
@@ -313,6 +339,8 @@ class Editor {
                 this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "ambientColor")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "reflective")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "checker")
+                this.gui_texture_edit_fldr.add(sel_primitive.texture, "phong")
+                this.gui_texture_edit_fldr.add(sel_primitive.texture, "phong_size")
 
                 this.gui_texture_edit_fldr.open()
                 this.gui_primitive_edit_fldr.open()
