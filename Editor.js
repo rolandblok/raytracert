@@ -163,7 +163,7 @@ class Editor {
         //constructor (color1_arg, color2_arg, reflective_arg, checker_arg=false, ambient_factor = 0.0, phong = false, phong_size = 25) {
    
         //rode bal
-        let vec = new THREE.Vector3(-2, 2, 1.5);
+        let vec = new THREE.Vector3(-2, 4, 1.5);
         let r = 1.5
         let color = "#ff0000"
         let refl = false
@@ -172,7 +172,7 @@ class Editor {
         this.model.addSphere(vec, r, texture)
         
         // groene bal
-        vec = new THREE.Vector3(2, 1.4, 0.5);
+        vec = new THREE.Vector3(3.6, 2.8, 0.5);
         r = 0.5 
         color = "#00ff00"
         refl = false
@@ -181,7 +181,7 @@ class Editor {
         this.model.addSphere(vec, r, texture)
         
         // blauwe bal
-        vec = new THREE.Vector3(1.3, 3.6, 1);
+        vec = new THREE.Vector3(1.3, 4.7, 1);
         r = 1 
         color = "#0000ff"
         refl = false
@@ -190,8 +190,8 @@ class Editor {
         this.model.addSphere(vec, r,texture)
         
         //spiegel bal 
-        vec = new THREE.Vector3(0, -4, 3);
-        r = 3 
+        vec = new THREE.Vector3(4.8, 0, 2);
+        r = 2 
         color = "#000000"
         refl = true
         checker = false
@@ -199,7 +199,7 @@ class Editor {
         this.model.addSphere(vec, r, texture)
         
         //checker bal 
-        vec = new THREE.Vector3(4, -4, 4);
+        vec = new THREE.Vector3(-1, -1.4, 4);
         r = 4 
         color = "#ff0000"
         let color2 = "#00ff00"

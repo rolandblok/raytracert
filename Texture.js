@@ -62,13 +62,12 @@ class Texture {
         return this._ambient_color.getHex();
     }
 
-    colorAt(position) {
+    threeColorAt(position) {
         if (this.checker) {
-            // add code here
-            if ((position.x)%2) {
+            if (Math.round(Math.abs(position.z))%2 == 0) {
                 return this._three_material.color
             } else {
-                return this.color2;
+                return new Color(this.color2);c
             }
         } else {
             return this._three_material.color
@@ -80,7 +79,7 @@ class Texture {
 
         // diffuse : 
         var intensity_fraction = N.dot(inverse_light_ray.direction.clone().normalize());
-        let mix_color = light_color.clone().multiply(this.colorAt(position))
+        let mix_color = light_color.clone().multiply(this.threeColorAt(position))
         mix_color = mix_color.multiplyScalar(intensity_fraction)
 
         // specular  https://en.wikipedia.org/wiki/Phong_reflection_model
