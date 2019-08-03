@@ -1,6 +1,6 @@
 class Camera {
 
-    constructor (ortho, pos, up, look_at, back_color) {
+    constructor (ortho, width, height, pos, up, look_at, back_color) {
 
         this.move_cam = "";
         this.ortho_camera = ortho
@@ -8,7 +8,7 @@ class Camera {
         this.look_at = look_at
         this.ray_status = ""
 
-        this.fov = 45
+        this.fov = 55
         
         //THREE
         if (ortho) {
@@ -27,11 +27,14 @@ class Camera {
             //aspect — Camera frustum aspect ratio.
             //near — Camera frustum near plane.
             //far — Camera frustum far plane.
-            this.THREEcamera = new THREE.PerspectiveCamera( this.fov, 1, 0.01, 2000 );
+            this.THREEcamera = new THREE.PerspectiveCamera( this.fov, 1.33, 0.01, 2000 );
         }
         this.THREEcamera.up = up
+        this.THREEcamera.aspect = width / height;
+        this.THREEcamera.fov = this.fov
         this.THREEcamera.position.copy(pos)
         this.THREEcamera.lookAt(look_at)
+        this.THREEcamera.updateProjectionMatrix();
 
         this.back_color = back_color;
     }

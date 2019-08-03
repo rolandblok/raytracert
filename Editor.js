@@ -23,27 +23,23 @@ class Editor {
         // THREE / GL
         this.three_scene = new THREE.Scene();
 
-
-        var pos, up, look_at, back_color;
-        pos        = new THREE.Vector3(7, 7, 7);
-        up         = new THREE.Vector3(0,   0,   1)
-        look_at    = new THREE.Vector3(0,   0,  1)
-        back_color = 0x000000
-        this.camera = new Camera(false, pos, up, look_at, back_color)
+        let GL_width = 640
+        let GL_height = 480
+        let pos        = new THREE.Vector3(7, 7, 7);
+        let up         = new THREE.Vector3(0,   0,   1)
+        let look_at    = new THREE.Vector3(0,   0,  1)
+        let back_color = 0x000000
+        this.camera = new Camera(false, GL_width, GL_height, pos, up, look_at, back_color)
         this.raycaster = new THREE.Raycaster(); 
-
                           
         // model
         this.model = new Model(this.three_scene);
-        //this.model.addBlock(1, 1, 1, 0x009955 )
-
         // coor.sys
-       // this.axis = new Axis(this.three_scene)
-
+        //this.axis = new Axis(this.three_scene)
+ 
         this.renderer = new THREE.WebGLRenderer({canvas: this.canvas_gl, antialias: true, depth: true});
-        this.renderer.setSize( window.innerHeight/2, window.innerHeight/2 );
-        document.body.appendChild(this.renderer.domElement);
-
+        this.renderer.setSize( GL_width, GL_height );
+        
         
         /*
         var light = new THREE.DirectionalLight( 0xffffff, 1 );
@@ -165,9 +161,9 @@ class Editor {
         this.clear_model()
 
         //constructor (color1_arg, color2_arg, reflective_arg, checker_arg=false, ambient_factor = 0.0, phong = false, phong_size = 25) {
-    
+   
         //rode bal
-        let vec = new THREE.Vector3(-2, 0, 1.5);
+        let vec = new THREE.Vector3(-2, 2, 1.5);
         let r = 1.5
         let color = "#ff0000"
         let refl = false
@@ -176,7 +172,7 @@ class Editor {
         this.model.addSphere(vec, r, texture)
         
         // groene bal
-        vec = new THREE.Vector3(2, 0, 0.5);
+        vec = new THREE.Vector3(2, 1.4, 0.5);
         r = 0.5 
         color = "#00ff00"
         refl = false
@@ -185,7 +181,7 @@ class Editor {
         this.model.addSphere(vec, r, texture)
         
         // blauwe bal
-        vec = new THREE.Vector3(0, 2, 1);
+        vec = new THREE.Vector3(1.3, 3.6, 1);
         r = 1 
         color = "#0000ff"
         refl = false
@@ -202,6 +198,16 @@ class Editor {
         texture = new Texture(color, color,  refl, checker)
         this.model.addSphere(vec, r, texture)
         
+        //checker bal 
+        vec = new THREE.Vector3(4, -4, 4);
+        r = 4 
+        color = "#ff0000"
+        let color2 = "#00ff00"
+        refl = false
+        checker = true
+        texture = new Texture(color, color2,  refl, checker)
+        this.model.addSphere(vec, r, texture)
+
         // witte onder vlak 
         vec = new THREE.Vector3(0, 0, 1);
         r = 0 
@@ -246,8 +252,6 @@ class Editor {
 
     resize() {
         console.log("resise")
-        this.renderer.setSize(window.innerHeight/2, window.innerHeight/2);
-
     }
 
     animLoop(cur_time_ms) {

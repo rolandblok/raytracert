@@ -26,7 +26,7 @@ class Texture {
         this._phong_size = val
     }
     get checker() {
-        return this._reflective;
+        return this._checker;
     }
     set checker(checker_arg) {
         this._checker = checker_arg;
@@ -54,6 +54,7 @@ class Texture {
     set ambientColor(color_arg) {
         this._ambient_color.setHex(color_arg)
     }
+
     /** ambientColo
      * 
      */
@@ -61,12 +62,25 @@ class Texture {
         return this._ambient_color.getHex();
     }
 
+    colorAt(position) {
+        if (this.checker) {
+            // add code here
+            if ((position.x)%2) {
+                return this._three_material.color
+            } else {
+                return this.color2;
+            }
+        } else {
+            return this._three_material.color
+        }
+    }
+
     /** shade the surface          */
-    shade(eye_ray, inverse_light_ray, light_color, N) {
+    shade(eye_ray, inverse_light_ray, light_color, N, position) {
 
         // diffuse : 
         var intensity_fraction = N.dot(inverse_light_ray.direction.clone().normalize());
-        let mix_color = light_color.clone().multiply(this._three_material.color)
+        let mix_color = light_color.clone().multiply(this.colorAt(position))
         mix_color = mix_color.multiplyScalar(intensity_fraction)
 
         // specular  https://en.wikipedia.org/wiki/Phong_reflection_model

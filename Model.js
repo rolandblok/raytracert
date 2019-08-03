@@ -63,7 +63,7 @@ class Model {
                 if (!obstruction_detected) {
                     //var hit_point = inverse_light_ray.origin;
                     var normal = hit_primitive.get_normal(hit_point);
-                    var color = hit_primitive.texture.shade(eye_ray, inv_light_ray, light.three_color, normal)
+                    var color = hit_primitive.texture.shade(eye_ray, inv_light_ray, light.three_color, normal, hit_point)
                     diffuse_color = diffuse_color.add(color)
                 }
 
