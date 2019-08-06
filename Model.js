@@ -41,7 +41,7 @@ class Model {
         if (labda_min != undefined) {
             hit_point = eye_ray.evaluate(labda_min)
 
-            var ambient_color = new Color(hit_primitive.texture.ambientColor);
+            var ambient_color = hit_primitive.texture.ambientColor
 
             var diffuse_color = new THREE.Color("black");
             // vind ray hitpoint tot lamp --> labda

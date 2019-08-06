@@ -1,10 +1,12 @@
 class Texture {
-    constructor (color1_arg, color2_arg, reflective_arg, checker_arg=false, ambient_factor = 0.0, phong = false, phong_size = 25) {
+    constructor (color1H_arg, color2H_arg, reflective_arg, ambient_factor = 0.0, phong = false, phong_size = 25) {
         this._reflective = reflective_arg;
-        this._three_material = new THREE.MeshPhongMaterial( {color:color1_arg} );
-        this._color2 = color2_arg;
-        this._checker = checker_arg;
-        this._ambient_color =  this._three_material.color.clone().multiplyScalar(ambient_factor)
+        this._three_material = new THREE.MeshPhongMaterial( {color:color1H_arg} );
+        this._color1 = new Color(color1H_arg)
+        this._color2 = new Color(color2H_arg)
+        this._checker = false;
+        this._marble = false
+        this._ambient_color =  this.color1.clone().multiplyScalar(ambient_factor)
         this._phong = phong
         this._phong_size = phong_size
     }
@@ -29,7 +31,15 @@ class Texture {
         return this._checker;
     }
     set checker(checker_arg) {
+        this._marble = false;
         this._checker = checker_arg;
+    }
+    get marble() {
+        return this._marble
+    }
+    set marble(marble_arg) {
+        this._checker = false
+        this._marble = marble_arg
     }
     get reflective() {
         return this._reflective;
@@ -37,44 +47,63 @@ class Texture {
     set reflective(reflective_arg) {
         this._reflective = reflective_arg;
     }
-    get color1 () {
-        return this._three_material.color.getHex()
+    get color1() {
+        return this._color1.clone()
     }
-    set color1(color_arg) {
+    get color1H () {
+        return this._color1.getHex()
+    }
+    set color1H(color_arg) {
+        this._color1.setHex(color_arg)
         this._three_material.color.setHex(color_arg)
     }
 
-    get color2 () {
-        return this._color2
+    get color2() {
+        return this._color2.clone()
     }
-    set color2(color_arg) {
-        this._color2 = color_arg
+    get color2H () {
+        return this._color2.getHex()
+    }
+    set color2H(color_arg) {
+        this._color2.setHex(color_arg)
     }
 
-    set ambientColor(color_arg) {
+    set ambientColorH(color_arg) {
         this._ambient_color.setHex(color_arg)
     }
 
     /** ambientColo
      * 
      */
-    get ambientColor() {
+    get ambientColorH() {
         return this._ambient_color.getHex();
+    }
+    get ambientColor() {
+        return this._ambient_color.clone();
     }
 
     threeColorAt(position) {
-        if (this.checker) {
+        if (this.checker || this.marble) {
             let x = Math.round(Math.abs(position.x))
             let y = Math.round(Math.abs(position.y))
             let z = Math.round(Math.abs(position.z))
             
             if ((x+y+z)%2 == 0) {
-                return this._three_material.color
+                return this.color1
             } else {
-                return new Color(this.color2);c
+                return this.color2
             }
-        } else {
-            return this._three_material.color
+        } else if (this.marble) {
+            let x = position.x / (Math.PI * 2.0)
+            let y = position.y / (Math.PI * 2.0)
+            let z = position.z / (Math.PI * 2.0)
+
+            let v = Math.sin(x)
+            //let c1 = this.color.multiplyScalar
+            return this.color1 
+        }
+        else {
+            return this.color1
         }
     }
 

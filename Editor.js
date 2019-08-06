@@ -167,8 +167,7 @@ class Editor {
         let r = 1.5
         let color = "#ff0000"
         let refl = false
-        let checker = false
-        let texture = new Texture(color, color,  refl, checker, 0.5, true, 5)
+        let texture = new Texture(color, color,  refl, 0.5, true, 5)
         this.model.addSphere(vec, r, texture)
         
         // groene bal
@@ -176,8 +175,7 @@ class Editor {
         r = 0.5 
         color = "#00ff00"
         refl = false
-        checker = false
-        texture = new Texture(color, color,  refl, checker)
+        texture = new Texture(color, color,  refl)
         this.model.addSphere(vec, r, texture)
         
         // blauwe bal
@@ -185,8 +183,7 @@ class Editor {
         r = 1 
         color = "#0000ff"
         refl = false
-        checker = false
-        texture = new Texture(color, color,  refl, checker, 0.0, true, 80)
+        texture = new Texture(color, color,  refl, 0.0, true, 80)
         this.model.addSphere(vec, r,texture)
         
         //spiegel bal 
@@ -194,8 +191,7 @@ class Editor {
         r = 2 
         color = "#000000"
         refl = true
-        checker = false
-        texture = new Texture(color, color,  refl, checker)
+        texture = new Texture(color, color,  refl)
         this.model.addSphere(vec, r, texture)
         
         //checker bal 
@@ -204,8 +200,18 @@ class Editor {
         color = "#ff0000"
         let color2 = "#00ff00"
         refl = false
-        checker = true
-        texture = new Texture(color, color2,  refl, checker)
+        texture = new Texture(color, color2,  refl )
+        texture.checker = true
+        this.model.addSphere(vec, r, texture)
+
+        //marble bal 
+        vec = new THREE.Vector3(-1, -10.4, 4);
+        r = 4 
+        color = "#000000"
+        color2 = "#ffffff"
+        refl = false
+        texture = new Texture(color, color2,  refl)
+        texture.marble = true
         this.model.addSphere(vec, r, texture)
 
         //  onder vlak 
@@ -214,8 +220,8 @@ class Editor {
         color = "#ffffff"
         color2 = "#333333"
         refl = false
-        checker = true
-        texture = new Texture(color, color2,  refl, checker)
+        texture = new Texture(color, color2,  refl)
+        texture.checker = true
         this.model.addPlane(vec, r, texture)
 
         // spiegel achter
@@ -223,8 +229,7 @@ class Editor {
         r = -8
         color = "#000000"
         refl = true
-        checker = false
-        texture = new Texture(color, color,  refl, checker)
+        texture = new Texture(color, color,  refl)
         this.model.addPlane(vec, r, texture)
 
         //lucht
@@ -232,7 +237,7 @@ class Editor {
         r = -10000 
         color = "#2266ff"
         refl = false
-        texture = new Texture(color, color, refl, false, 1.0)
+        texture = new Texture(color, color, refl, 1.0)
         this.model.addPlane(vec, r, texture)
                 
         this.new_light.x_gui.setValue(20)
@@ -324,24 +329,24 @@ class Editor {
                 this.gui_primitive_edit_fldr = this.gui_edit.addFolder(sel_primitive.type)
 
                 if (sel_primitive.type == "sphere") {
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "x", -9, 9).step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "y", -9, 9).step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "z", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "x").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "y").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "z").step(0.1)
                     this.gui_primitive_edit_fldr.add(sel_primitive, "radius", 0.1).step(0.1)
             
                 } else if (sel_primitive.type == "plane") {
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "normal_x", -9, 9).step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "normal_y", -9, 9).step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "normal_z", -9, 9).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "normal_x").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "normal_y").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "normal_z").step(0.1)
                     this.gui_primitive_edit_fldr.add(sel_primitive, "distance_to_origin" ).step(0.1)
                     //todo
                 }
 
                 this.gui_edit.removeFolder(this.gui_texture_edit_fldr)
                 this.gui_texture_edit_fldr = this.gui_edit.addFolder("texture")
-                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color1")
-                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color2")
-                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "ambientColor")
+                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color1H")
+                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "color2H")
+                this.gui_texture_edit_fldr.addColor(sel_primitive.texture, "ambientColorH")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "reflective")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "checker")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "phong")
