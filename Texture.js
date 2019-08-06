@@ -64,7 +64,11 @@ class Texture {
 
     threeColorAt(position) {
         if (this.checker) {
-            if (Math.round(Math.abs(position.z))%2 == 0) {
+            let x = Math.round(Math.abs(position.x))
+            let y = Math.round(Math.abs(position.y))
+            let z = Math.round(Math.abs(position.z))
+            
+            if ((x+y+z)%2 == 0) {
                 return this._three_material.color
             } else {
                 return new Color(this.color2);c

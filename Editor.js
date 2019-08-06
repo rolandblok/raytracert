@@ -25,9 +25,9 @@ class Editor {
 
         let GL_width = 640
         let GL_height = 480
-        let pos        = new THREE.Vector3(7, 7, 7);
+        let pos        = new THREE.Vector3(10, 10, 8);
         let up         = new THREE.Vector3(0,   0,   1)
-        let look_at    = new THREE.Vector3(0,   0,  1)
+        let look_at    = new THREE.Vector3(0,   0,  2.5)
         let back_color = 0x000000
         this.camera = new Camera(false, GL_width, GL_height, pos, up, look_at, back_color)
         this.raycaster = new THREE.Raycaster(); 
@@ -208,17 +208,18 @@ class Editor {
         texture = new Texture(color, color2,  refl, checker)
         this.model.addSphere(vec, r, texture)
 
-        // witte onder vlak 
+        //  onder vlak 
         vec = new THREE.Vector3(0, 0, 1);
         r = 0 
         color = "#ffffff"
+        color2 = "#333333"
         refl = false
-        checker = false
-        texture = new Texture(color, color,  refl, checker)
+        checker = true
+        texture = new Texture(color, color2,  refl, checker)
         this.model.addPlane(vec, r, texture)
 
         // spiegel achter
-        vec = new THREE.Vector3(1, 0, 0);
+        vec = new THREE.Vector3(1, 0.1, 0);
         r = -8
         color = "#000000"
         refl = true
@@ -237,14 +238,14 @@ class Editor {
         this.new_light.x_gui.setValue(20)
         this.new_light.y_gui.setValue(0)
         this.new_light.z_gui.setValue(20)
-        this.new_light.color = "#ffffff"
+        this.new_light.color = "#ffff00"
         this.new_light.c_gui.setValue(this.new_light.color )
         this.addNewLight()
 
         this.new_light.x_gui.setValue(0)
         this.new_light.y_gui.setValue(20)
         this.new_light.z_gui.setValue(40)
-        this.new_light.color = "#4499cc"
+        this.new_light.color = "#0000ff"
         this.new_light.c_gui.setValue(this.new_light.color )
         this.addNewLight()
 
