@@ -83,7 +83,7 @@ class Texture {
     }
 
     threeColorAt(position) {
-        if (this.checker || this.marble) {
+        if (this.checker ) {
             let x = Math.round(Math.abs(position.x))
             let y = Math.round(Math.abs(position.y))
             let z = Math.round(Math.abs(position.z))
@@ -94,13 +94,21 @@ class Texture {
                 return this.color2
             }
         } else if (this.marble) {
-            let x = position.x / (Math.PI * 2.0)
-            let y = position.y / (Math.PI * 2.0)
-            let z = position.z / (Math.PI * 2.0)
+            let x = position.x * Math.PI * 2.0
+            let y = position.y * Math.PI * 2.0
+            let z = position.z * Math.PI * 2.0
 
-            let v = Math.sin(x)
-            //let c1 = this.color.multiplyScalar
-            return this.color1 
+            let scale = 1
+            let turbulence = .5
+            let xx = x-scale*Math.sin(x/turbulence);
+            let yy = y+ scale*Math.cos(y/turbulence);
+
+            let v = 0.5*(Math.sin(xx+yy)+1.0)
+            let c1 = this.color1.multiplyScalar(v)
+            let c2 = this.color2.multiplyScalar(1-v)
+            let gradient_color = c1.add(c2)
+            
+            return gradient_color
         }
         else {
             return this.color1
