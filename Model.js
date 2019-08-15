@@ -3,7 +3,7 @@ class Model {
     constructor (three_scene) {
         this.primitives = {}
         this.primitive_counter = 0 // needed for unique ids
-        this.lights = {}
+        this.lights = []
         this.three_scene = three_scene;
     }
 
@@ -20,6 +20,7 @@ class Model {
         let pixel_color = new THREE.Color("black")
         
         if (depth <= 0){
+            console.log("Reach iteration limit for ray " + eye_ray);
             return new THREE.Color("black");
         }
 
@@ -43,11 +44,11 @@ class Model {
 
             var ambient_color = hit_primitive.texture.ambientColor
 
-            var diffuse_color = new THREE.Color("black");
+            var diffuse_color = new Color("black");
             // vind ray hitpoint tot lamp --> labda
             for(var light of this.lights) {
-                var light_ray = new Ray(light.position, hit_point)
-                var inv_light_ray = new Ray(hit_point, light.position)
+                let light_ray = new Ray(light.position, hit_point)
+                let inv_light_ray = new Ray(hit_point, light.position)
 
                 // zoek obstructies 
                 var obstruction_detected = false
@@ -63,13 +64,13 @@ class Model {
                 if (!obstruction_detected) {
                     //var hit_point = inverse_light_ray.origin;
                     var normal = hit_primitive.get_normal(hit_point);
-                    var color = hit_primitive.texture.shade(eye_ray, inv_light_ray, light.three_color, normal, hit_point)
+                    var color = hit_primitive.texture.shade(eye_ray, inv_light_ray, light.our_color, normal, hit_point)
                     diffuse_color = diffuse_color.add(color)
                 }
 
             }
 
-            var reflective_color = new THREE.Color("black");
+            var reflective_color = new Color("black");
             if (hit_primitive.texture.is_reflective()) {
                 // Notation as in https://math.stackexchange.com/a/13263
                 var d = eye_ray.direction;
@@ -79,6 +80,9 @@ class Model {
                 var new_ray = new Ray(hit_point, new_point);
 
                 reflective_color = this.raytrace(new_ray, depth-1);
+                if ((reflective_color.r == 0) &&  (reflective_color.g == 0) && (reflective_color.b == 0)) {
+                    this.raytrace(new_ray, depth-1);
+                }
             }
 
             ambient_color = ambient_color.add(diffuse_color);
@@ -86,7 +90,7 @@ class Model {
             return ambient_color;
         }
 
-        return new THREE.Color("black");
+        return new Color("black");
     }
 
     addLight(light_pos, color) {

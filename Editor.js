@@ -225,8 +225,8 @@ class Editor {
         this.model.addPlane(vec, r, texture)
 
         // spiegel achter
-        vec = new THREE.Vector3(1, 0.1, 0);
-        r = -8
+        vec = new THREE.Vector3(1, 0, 0);
+        r = -7.7
         color = "#000000"
         refl = true
         texture = new Texture(color, color,  refl)

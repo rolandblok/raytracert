@@ -126,8 +126,11 @@ class Texture {
         // specular  https://en.wikipedia.org/wiki/Phong_reflection_model
         if (this.phong) {
             let L = inverse_light_ray.direction_n
-            let R = (N.clone().multiplyScalar(2.0*(L.dot(N))).sub(L))
-            let ph = Math.pow(Math.abs(eye_ray.direction_n.dot(R)), this.phong_size)
+            let sc = 2.0*(L.dot(N));
+            let R = (N.clone().multiplyScalar(sc).sub(L));
+            var t = eye_ray.direction_n.dot(R);
+            t = -Math.min(t, 0.0);
+            let ph = Math.pow(t, this.phong_size)
             let phong_color = light_color.clone().multiplyScalar(ph)
             mix_color.add(phong_color)
         }

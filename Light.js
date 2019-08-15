@@ -43,4 +43,8 @@ class Light {
         return this.three_light.color;
     }
 
+    get our_color() {
+        return new Color(this.three_light.color)
+    }
+
 }

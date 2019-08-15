@@ -142,7 +142,7 @@ class Camera {
                 D.add(this.THREEcamera.position)
 
                 var ray = new Ray(this.THREEcamera.position, D)
-                var color = model.raytrace(ray)
+                var color = model.raytrace(ray, 5)
                 // insert color paiunt on ctx
                 ctx.fillStyle = "#"+color.getHexString();
                 ctx.fillRect(x, y, 1, 1);
