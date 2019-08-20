@@ -86,13 +86,17 @@ class Editor {
         this.new_primitive.y = 0
         this.new_primitive.z = 0
         this.new_primitive.r = 1
+        this.new_primitive.r2 = 0.4
+        this.new_primitive.r3 = 0.4
         this.new_primitive.color = "#ffffff"
         this.new_primitive.reflective = false
-        gui_new_primitive.add(this.new_primitive, "type", ['sphere', 'plane'])
+        gui_new_primitive.add(this.new_primitive, "type", ['sphere', 'plane', 'torus'])
         gui_new_primitive.add(this.new_primitive, "x").step(0.1)
         gui_new_primitive.add(this.new_primitive, "y").step(0.1)
         gui_new_primitive.add(this.new_primitive, "z").step(0.1)
         gui_new_primitive.add(this.new_primitive, "r").step(0.1)
+        gui_new_primitive.add(this.new_primitive, "r2").step(0.1)
+        gui_new_primitive.add(this.new_primitive, "r3").step(0.1)
         gui_new_primitive.addColor(this.new_primitive, "color")
         gui_new_primitive.add(this.new_primitive, "reflective")
         gui_new_primitive.add(this, "addNewPrimitive")
@@ -137,6 +141,13 @@ class Editor {
         } else if (this.new_primitive.type == 'plane') {
             let texture = new Texture(this.new_primitive.color, this.new_primitive.color, this.new_primitive.reflective)
             primitive = this.model.addPlane(vec, this.new_primitive.r, texture)
+        } else if (this.new_primitive.type == 'torus') {
+            let texture = new Texture(this.new_primitive.color, this.new_primitive.color, this.new_primitive.reflective)
+            primitive = this.model.addTorus(vec, this.new_primitive.r, this.new_primitive.r2, texture)
+        }  else if (this.new_primitive.type == 'cube') {
+            let texture = new Texture(this.new_primitive.color, this.new_primitive.color, this.new_primitive.reflective)
+            let vec2 = new THREE.Vector3(this.new_primitive.r, this.new_primitive.r2, this.new_primitive.r3);
+            primitive = this.model.addCube(vec, vec2, texture)
         }
     }
 
@@ -339,6 +350,22 @@ class Editor {
                     this.gui_primitive_edit_fldr.add(sel_primitive, "normal_y").step(0.1)
                     this.gui_primitive_edit_fldr.add(sel_primitive, "normal_z").step(0.1)
                     this.gui_primitive_edit_fldr.add(sel_primitive, "distance_to_origin" ).step(0.1)
+                    //todo
+                } else if (sel_primitive.type == "torus") {
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "x").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "y").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "z").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "radius", 0.1).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "tube_radius", 0.1).step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "distance_to_origin" ).step(0.1)
+                    //todo
+                } else if (sel_primitive.type == "cube") {
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "x1").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "y1").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "z1").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "x2").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "y2").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "z2").step(0.1)
                     //todo
                 }
 

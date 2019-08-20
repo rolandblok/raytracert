@@ -15,6 +15,7 @@ class Sphere extends Primitive {
 
     hit(ray)
     {
+        //https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
         var R = this.three_mesh.scale.x ;
         var center = this.three_mesh.position;
         var origin = ray.origin;
