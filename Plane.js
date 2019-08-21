@@ -11,7 +11,9 @@ class Plane extends Primitive {
         this._updatePositionMesh()
 
         this.three_mesh.name = id
-        three_scene.add( this.three_mesh )
+
+        this.three_scene = three_scene
+        this.three_scene.add( this.three_mesh )
     }
 
     _updatePositionMesh(){
@@ -22,16 +24,21 @@ class Plane extends Primitive {
 
     hit(ray)
     {
+        return Plane.planehit(ray,this.normal, this.distance_to_origin)
+    }
+
+    // made this helper, so cube can also use it :-)
+    static planehit(ray, normal, distance_to_origin) {
         var direction = ray.direction
         var origin = ray.origin
 
-        var denominator = direction.dot(this.normal)
+        var denominator = direction.dot(normal)
 
         if (Math.abs(denominator) < FLOATING_POINT_ACCURACY) {
             return undefined
         }
 
-        var numerator = this.distance_to_origin - this.normal.dot(origin)
+        var numerator = distance_to_origin - normal.dot(origin)
 
         return numerator / denominator
     }

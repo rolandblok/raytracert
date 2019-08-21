@@ -102,7 +102,7 @@ class Model {
     }
 
     addPlane(normal, distance, texture) {
-        var id = this._genID(normal.x,normal.y,normal.z)
+        var id = this._genID( )
         var plane = new Plane(id, this.three_scene, normal, distance, texture)
         this.primitives[id] = plane
 
@@ -110,12 +110,20 @@ class Model {
     }
 
     addSphere(pos, radius, texture) {
-        var id = this._genID( pos.x, pos.y, pos.z)
+        var id = this._genID( )
         var sphere = new Sphere(id, this.three_scene, pos, radius, texture)
         this.primitives[id] = sphere
 
         return sphere;
     }
+    addCube(A, B, texture) {
+        var id = this._genID( )
+        var cube = new Cube(id, this.three_scene, A, B, texture)
+        this.primitives[id] = cube
+
+        return cube;
+    }
+
 
     getPrimitive(id) {
         return this.primitives[id]
@@ -129,7 +137,7 @@ class Model {
         return this.blocks(keys())
     }
 
-    _genID(type,x,y,z) {
+    _genID(type) {
         this.primitive_counter ++
         return this.primitive_counter 
     }

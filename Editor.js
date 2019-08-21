@@ -90,7 +90,7 @@ class Editor {
         this.new_primitive.r3 = 0.4
         this.new_primitive.color = "#ffffff"
         this.new_primitive.reflective = false
-        gui_new_primitive.add(this.new_primitive, "type", ['sphere', 'plane', 'torus'])
+        gui_new_primitive.add(this.new_primitive, "type", ['sphere', 'plane', 'cube', 'torus'])
         gui_new_primitive.add(this.new_primitive, "x").step(0.1)
         gui_new_primitive.add(this.new_primitive, "y").step(0.1)
         gui_new_primitive.add(this.new_primitive, "z").step(0.1)
@@ -224,6 +224,15 @@ class Editor {
         texture = new Texture(color, color2,  refl)
         texture.marble = true
         this.model.addSphere(vec, r, texture)
+
+        // cube 01
+        let A = new THREE.Vector3(0, 7, 2)
+        let B = new THREE.Vector3(2, 8, 1)
+        color = "#11ff22"
+        color2 = "#ffffff"
+        refl = false
+        texture = new Texture(color, color2,  refl)
+        this.model.addCube(A, B, texture)
 
         //  onder vlak 
         vec = new THREE.Vector3(0, 0, 1);
@@ -360,12 +369,12 @@ class Editor {
                     this.gui_primitive_edit_fldr.add(sel_primitive, "distance_to_origin" ).step(0.1)
                     //todo
                 } else if (sel_primitive.type == "cube") {
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "x1").step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "y1").step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "z1").step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "x2").step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "y2").step(0.1)
-                    this.gui_primitive_edit_fldr.add(sel_primitive, "z2").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "Ax").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "Ay").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "Az").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "Bx").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "By").step(0.1)
+                    this.gui_primitive_edit_fldr.add(sel_primitive, "Bz").step(0.1)
                     //todo
                 }
 

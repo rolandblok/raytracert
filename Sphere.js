@@ -10,7 +10,8 @@ class Sphere extends Primitive {
         this.three_mesh.scale.z = _radius
         this.three_mesh.name = id;
 
-        three_scene.add( this.three_mesh )
+        this.three_scene = three_scene
+        this.three_scene.add( this.three_mesh )
     }
 
     hit(ray)
