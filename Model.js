@@ -38,7 +38,7 @@ class Model {
             }
         }
 
-        // kleinste labra is hit --> hitpoint
+        // kleinste labda is hit --> hitpoint
         if (labda_min != undefined) {
             hit_point = eye_ray.evaluate(labda_min)
 

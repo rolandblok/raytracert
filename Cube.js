@@ -7,58 +7,68 @@ class Cube extends Primitive {
         this.three_mesh.name = id;
         this.three_scene = three_scene
         this.three_scene.add( this.three_mesh )
+
+        this._A = new THREE.Vector3(0,0,0)
+        this._B = new THREE.Vector3(0,0,0)
+        this.planes = {}
+        this.planes["XF"]   = new Set()
+        this.planes["XF"].n = new THREE.Vector3( 1, 0, 0)
+        this.planes["XB"]   = new Set()
+        this.planes["XB"].n = new THREE.Vector3(-1, 0, 0)
+        this.planes["YF"]   = new Set()
+        this.planes["YF"].n = new THREE.Vector3( 0, 1, 0)
+        this.planes["YB"]   = new Set()
+        this.planes["YB"].n = new THREE.Vector3( 0,-1, 0)
+        this.planes["ZF"]   = new Set()
+        this.planes["ZF"].n = new THREE.Vector3( 0, 0, 1)
+        this.planes["ZB"]   = new Set()
+        this.planes["ZB"].n = new THREE.Vector3( 0, 0,-1)
         this.updateCubePos(A, B)
-        
 
     }
 
     hit(ray)
     {
-        let l = null
-        let lr = null
-        l = Plane.planehit(ray, this.XF_n, this.XF_d)
-        if ((lr == null) || (l < lr)) { lr = l } 
-        l = Plane.planehit(ray, this.XB_n, this.XB_d)
-        if ((lr == null) || (l < lr)) { lr = l } 
-        l = Plane.planehit(ray, this.YF_n, this.YF_d)
-        if ((lr == null) || (l < lr)) { lr = l } 
-        l = Plane.planehit(ray, this.YB_n, this.YB_d)
-        if ((lr == null) || (l < lr)) { lr = l } 
-        l = Plane.planehit(ray, this.ZF_n, this.ZF_d)
-        if ((lr == null) || (l < lr)) { lr = l } 
-        l = Plane.planehit(ray, this.ZB_n, this.ZB_d)
-        if ((lr == null) || (l < lr)) { lr = l } 
+        let hit_labda = null
+        for (const [plane_id, plane] of Object.entries(this.planes)) {
+            let labda = Plane.planehit(ray, plane.n, plane.d)
+            let hitpoint = ray.evaluate(labda)
+            if ( (hitpoint.x < this.planes["XF"].d) &&
+                 (hitpoint.y < this.planes["YF"].d) &&
+                 (hitpoint.z < this.planes["ZF"].d) &&
+                 (hitpoint.x > this.planes["XB"].d) &&
+                 (hitpoint.y > this.planes["YB"].d) &&
+                 (hitpoint.z > this.planes["ZB"].d)    ) {
+                    if ((hit_labda == null) || (labda < hit_labda)) {
+                        hit_labda = labda
+                    } 
+                }
+        }
 
-        return lr
+        return hit_labda
     }
 
     get_normal(hit_point) {
-        return new THREE.Vector3(1,1,1)
+       return new THREE.Vector3(1,0,0)
     }
 
     updateCubePos(A, B){
         this._A = A.clone()
-        this._B = B.clone()
-        this._scale = B.clone().sub(A)
-        this._translate = A.clone().add(this._scale.clone().multiplyScalar(0.5))
+        this._B = B.clone();
+        
+        this.planes["XF"].d = Math.max(A.x, B.x); 
+        this.planes["XB"].d = Math.min(A.x, B.x)
+        this.planes["YF"].d = Math.max(A.y, B.y); 
+        this.planes["YB"].d = Math.min(A.y, B.y)
+        this.planes["ZF"].d = Math.max(A.z, B.z);
+        this.planes["ZB"].d = Math.min(A.z, B.z)
+
+        this._scale = this._B.clone().sub(this._A)
+        this._translate = this._A.clone().add(this._scale.clone().multiplyScalar(0.5))
         this.three_mesh.position.set(this._translate.x, this._translate.y, this._translate.z)
         this.three_mesh.scale.x = this._scale.x
         this.three_mesh.scale.y = this._scale.y
         this.three_mesh.scale.z = this._scale.z
-
-        // 6 planes to be defined: distance orig + normal for : XFront, XBack, YFront ,.. etc
-        this.XF_n = new THREE.Vector3(1,0,0)
-        this.XF_d = this._A.x > this._B.x ? this._A.x : this._B.x
-        this.XB_n = new THREE.Vector3(-1,0,0)
-        this.XB_d = this._A.x < this._B.x ? this._A.x : this._B.x
-        this.YF_n = new THREE.Vector3(1,0,0)
-        this.YF_d = this._A.y > this._B.y ? this._A.y : this._B.y
-        this.YB_n = new THREE.Vector3(-1,0,0)
-        this.YB_d = this._A.y < this._B.y ? this._A.y : this._B.y
-        this.ZF_n = new THREE.Vector3(1,0,0)
-        this.ZF_d = this._A.z > this._B.z ? this._A.z : this._B.z
-        this.ZB_n = new THREE.Vector3(-1,0,0)
-        this.ZB_d = this._A.z < this._B.z ? this._A.z : this._B.z
     }
 
     //get/set position

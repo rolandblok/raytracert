@@ -25,7 +25,4 @@ class Ray {
         return new THREE.Vector3().addVectors(this._origin, this._direction.clone().multiplyScalar(lambda));
     }
 
-
-
-
 }
