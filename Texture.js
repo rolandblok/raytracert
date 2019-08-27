@@ -116,7 +116,9 @@ class Texture {
     }
 
     /** shade the surface          */
-    shade(eye_ray, inverse_light_ray, light_color, N, position) {
+    shade(eye_ray, inverse_light_ray, light_color, hit_point) {
+        let N = hit_point.normal
+        let position = hit_point.position
 
         // diffuse : 
         var intensity_fraction = N.dot(inverse_light_ray.direction.clone().normalize());

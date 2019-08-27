@@ -11,10 +11,6 @@ class Primitive {
         throw new Error('Please implement Primitive.hit()');
     }
 
-    get_normal(hit_point) {
-        throw new Error('Please implement Primitive.get_normal()');
-    }
-
     delete () {
         this.three_scene.remove(this.three_mesh)
     }

@@ -24,7 +24,8 @@ class Plane extends Primitive {
 
     hit(ray)
     {
-        return Plane.planehit(ray,this.normal, this.distance_to_origin)
+        return Plane.planehit(ray, this.normal, this.distance_to_origin)
+        
     }
 
     // made this helper, so cube can also use it :-)
@@ -40,11 +41,11 @@ class Plane extends Primitive {
 
         var numerator = distance_to_origin - normal.dot(origin)
 
-        return numerator / denominator
-    }
+        let labda =  numerator / denominator
+        let hit_position = ray.evaluate(labda)
+        let hit_normal = normal.clone();
 
-    get_normal(hit_point) {
-        return this.normal.clone();
+        return new Hitpoint(labda, hit_position, hit_normal)
     }
 
     //get/set position

@@ -30,27 +30,33 @@ class Cube extends Primitive {
     hit(ray)
     {
         let hit_labda = null
+        let hit_normal = null
         for (const [plane_id, plane] of Object.entries(this.planes)) {
             let labda = Plane.planehit(ray, plane.n, plane.d)
             let hitpoint = ray.evaluate(labda)
-            if ( (hitpoint.x < this.planes["XF"].d) &&
-                 (hitpoint.y < this.planes["YF"].d) &&
-                 (hitpoint.z < this.planes["ZF"].d) &&
-                 (hitpoint.x > this.planes["XB"].d) &&
-                 (hitpoint.y > this.planes["YB"].d) &&
-                 (hitpoint.z > this.planes["ZB"].d)    ) {
+            if ( (hitpoint.x <= this.planes["XF"].d + FLOATING_POINT_ACCURACY) &&
+                 (hitpoint.y <= this.planes["YF"].d + FLOATING_POINT_ACCURACY) &&
+                 (hitpoint.z <= this.planes["ZF"].d + FLOATING_POINT_ACCURACY) &&
+                 (hitpoint.x >= this.planes["XB"].d - FLOATING_POINT_ACCURACY) &&
+                 (hitpoint.y >= this.planes["YB"].d - FLOATING_POINT_ACCURACY) &&
+                 (hitpoint.z >= this.planes["ZB"].d - FLOATING_POINT_ACCURACY)   
+                  ) {
                     if ((hit_labda == null) || (labda < hit_labda)) {
                         hit_labda = labda
+                        hit_normal = plane.n.clone();
                     } 
                 }
         }
 
-        return hit_labda
+        let hitpoint = null
+        if (hit_labda != null) {
+            let hit_point = ray.evaluate(hit_labda)
+            hitpoint = new Hitpoint(hit_labda, hit_point, hit_normal )
+        }
+
+        return hitpoint
     }
 
-    get_normal(hit_point) {
-       return new THREE.Vector3(1,0,0)
-    }
 
     updateCubePos(A, B){
         this._A = A.clone()

@@ -29,20 +29,25 @@ class Sphere extends Primitive {
 
         var discriminant = b*b - 4.0*a*c;
 
+        let labda = null;
         if (discriminant < 0) {
             return undefined;
         } else if (discriminant > 0) {
             var lambda1 = (-b+Math.sqrt(discriminant))/(2.0*a); 
             var lambda2 = (-b-Math.sqrt(discriminant))/(2.0*a);
-            return Math.min(lambda1, lambda2);
-        } 
+            labda = Math.min(lambda1, lambda2);
+        } else {
+            labda = -b/(2.0*a);
+        }
+        let hit_position = ray.evaluate(labda)
+        let hit_normal = this.get_normal(hit_position)
 
-        return -b/(2.0*a);
+        return new Hitpoint(labda, hit_position, hit_normal)
     }
 
-    get_normal(hit_point) {
+    get_normal(hit_position) {
         var center = this.three_mesh.position;
-        var normal = hit_point.clone().sub(center);
+        var normal = hit_position.clone().sub(center);
         return normal.normalize();
     }
 
