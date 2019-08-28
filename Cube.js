@@ -27,34 +27,30 @@ class Cube extends Primitive {
 
     }
 
-    hit(ray)
-    {
-        let hit_labda = null
-        let hit_normal = null
+    hit(ray) {
+        let hit_point = null
         for (const [plane_id, plane] of Object.entries(this.planes)) {
-            let labda = Plane.planehit(ray, plane.n, plane.d)
-            let hitpoint = ray.evaluate(labda)
-            if ( (hitpoint.x <= this.planes["XF"].d + FLOATING_POINT_ACCURACY) &&
-                 (hitpoint.y <= this.planes["YF"].d + FLOATING_POINT_ACCURACY) &&
-                 (hitpoint.z <= this.planes["ZF"].d + FLOATING_POINT_ACCURACY) &&
-                 (hitpoint.x >= this.planes["XB"].d - FLOATING_POINT_ACCURACY) &&
-                 (hitpoint.y >= this.planes["YB"].d - FLOATING_POINT_ACCURACY) &&
-                 (hitpoint.z >= this.planes["ZB"].d - FLOATING_POINT_ACCURACY)   
-                  ) {
-                    if ((hit_labda == null) || (labda < hit_labda)) {
-                        hit_labda = labda
-                        hit_normal = plane.n.clone();
-                    } 
+            let this_hit_point = Plane.planehit(ray, plane.n, plane.d)
+            // check if it is in front of us
+            if (this_hit_point.labda > 0) {
+                // check if we have not yet hitpoint, or if this one is closer
+                if ((hit_point == null) || (hit_point.labda > this_hit_point.labda)) {
+                    // check if it isactually the box (not outside the box)
+                    let hit_pos = this_hit_point.position
+                    if ( (hit_pos.x <= this.planes["XF"].d + FLOATING_POINT_ACCURACY) &&
+                         (hit_pos.y <= this.planes["YF"].d + FLOATING_POINT_ACCURACY) &&
+                         (hit_pos.z <= this.planes["ZF"].d + FLOATING_POINT_ACCURACY) &&
+                         (hit_pos.x >= this.planes["XB"].d - FLOATING_POINT_ACCURACY) &&
+                         (hit_pos.y >= this.planes["YB"].d - FLOATING_POINT_ACCURACY) &&
+                         (hit_pos.z >= this.planes["ZB"].d - FLOATING_POINT_ACCURACY)   
+                         ) {
+                            hit_point = this_hit_point
+                    }                    
                 }
+            }
         }
 
-        let hitpoint = null
-        if (hit_labda != null) {
-            let hit_point = ray.evaluate(hit_labda)
-            hitpoint = new Hitpoint(hit_labda, hit_point, hit_normal )
-        }
-
-        return hitpoint
+        return hit_point
     }
 
 
