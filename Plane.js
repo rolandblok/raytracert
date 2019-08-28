@@ -29,6 +29,7 @@ class Plane extends Primitive {
     }
 
     // made this helper, so cube can also use it :-)
+    // https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection
     static planehit(ray, normal, distance_to_origin) {
         var direction = ray.direction
         var origin = ray.origin

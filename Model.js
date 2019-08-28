@@ -25,15 +25,14 @@ class Model {
         }
 
         // loop over primitives heen voor intersects
-        var labda_min = undefined
-        var hit_primitive = undefined
-        var hit_point = undefined
+        let hit_primitive = undefined
+        let hit_point = undefined
         for (var primitive of Object.values(this.primitives)) {
-            var hit_point = primitive.hit(eye_ray)
-            if ((hit_point != undefined) && (hit_point.labda > 0)) {
-                if ((labda_min == undefined) || (labda_min > hit_point.labda)) {
-                    labda_min = hit_point.labda
+            let this_hit_point = primitive.hit(eye_ray)
+            if ((this_hit_point != undefined) && (this_hit_point.labda > 0)) {
+                if ((hit_point == undefined) || (hit_point.labda > this_hit_point.labda)) {
                     hit_primitive = primitive;
+                    hit_point = this_hit_point
                 }
             }
         }
