@@ -32,7 +32,7 @@ class Cube extends Primitive {
         for (const [plane_id, plane] of Object.entries(this.planes)) {
             let this_hit_point = Plane.planehit(ray, plane.n, plane.d)
             // check if it is in front of us
-            if (this_hit_point.labda > 0) {
+            if ((this_hit_point != undefined) && (this_hit_point.labda > 0)) {
                 // check if we have not yet hitpoint, or if this one is closer
                 if ((hit_point == null) || (hit_point.labda > this_hit_point.labda)) {
                     // check if it isactually the box (not outside the box)
