@@ -40,9 +40,9 @@ class Cube extends Primitive {
                     if ( (hit_pos.x <= this.planes["XF"].d + FLOATING_POINT_ACCURACY) &&
                          (hit_pos.y <= this.planes["YF"].d + FLOATING_POINT_ACCURACY) &&
                          (hit_pos.z <= this.planes["ZF"].d + FLOATING_POINT_ACCURACY) &&
-                         (hit_pos.x >= this.planes["XB"].d - FLOATING_POINT_ACCURACY) &&
-                         (hit_pos.y >= this.planes["YB"].d - FLOATING_POINT_ACCURACY) &&
-                         (hit_pos.z >= this.planes["ZB"].d - FLOATING_POINT_ACCURACY)   
+                         (hit_pos.x >= -this.planes["XB"].d - FLOATING_POINT_ACCURACY) &&
+                         (hit_pos.y >= -this.planes["YB"].d - FLOATING_POINT_ACCURACY) &&
+                         (hit_pos.z >= -this.planes["ZB"].d - FLOATING_POINT_ACCURACY)   
                          ) {
                             hit_point = this_hit_point
                     }                    
@@ -59,11 +59,11 @@ class Cube extends Primitive {
         this._B = B.clone();
         
         this.planes["XF"].d = Math.max(A.x, B.x); 
-        this.planes["XB"].d = Math.min(A.x, B.x)
+        this.planes["XB"].d = -Math.min(A.x, B.x)
         this.planes["YF"].d = Math.max(A.y, B.y); 
-        this.planes["YB"].d = Math.min(A.y, B.y)
+        this.planes["YB"].d = -Math.min(A.y, B.y)
         this.planes["ZF"].d = Math.max(A.z, B.z);
-        this.planes["ZB"].d = Math.min(A.z, B.z)
+        this.planes["ZB"].d = -Math.min(A.z, B.z)
 
         this._scale = this._B.clone().sub(this._A)
         this._translate = this._A.clone().add(this._scale.clone().multiplyScalar(0.5))
