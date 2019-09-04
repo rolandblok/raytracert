@@ -82,7 +82,7 @@ class Texture {
         return this._ambient_color.clone();
     }
 
-    threeColorAt(position) {
+    getColorAt(position) {
         if (this.checker ) {
             let x = Math.round(Math.abs(position.x))
             let y = Math.round(Math.abs(position.y))
@@ -122,7 +122,7 @@ class Texture {
 
         // diffuse : 
         var intensity_fraction = N.dot(inverse_light_ray.direction.clone().normalize());
-        let mix_color = light_color.clone().multiply(this.threeColorAt(position))
+        let mix_color = light_color.clone().multiply(this.getColorAt(position))
         mix_color = mix_color.multiplyScalar(intensity_fraction)
 
         // specular  https://en.wikipedia.org/wiki/Phong_reflection_model

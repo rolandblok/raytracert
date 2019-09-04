@@ -76,12 +76,10 @@ class Model {
                 var n = hit_point.normal;
                 var r = new THREE.Vector3().subVectors(d, n.multiplyScalar(2.0*d.dot(n)))
                 var new_point = new THREE.Vector3().addVectors( hit_point.position, r );
-                var new_ray = new Ray(hit_point.position, new_point);
+                var hit_point_with_offset = new THREE.Vector3().addVectors( hit_point.position, r.multiplyScalar(FLOATING_POINT_ACCURACY));
+                var new_ray = new Ray(hit_point_with_offset, new_point);
 
                 reflective_color = this.raytrace(new_ray, depth-1);
-                if ((reflective_color.r == 0) &&  (reflective_color.g == 0) && (reflective_color.b == 0)) {
-                    this.raytrace(new_ray, depth-1);
-                }
             }
 
             ambient_color = ambient_color.add(diffuse_color);
