@@ -16,3 +16,8 @@ function solve_quadratic(coefficient_order_2, coefficient_order_1, coefficient_o
         return [-b/(2.0*a)];
     }
 }
+
+function randseed(str) {
+    Math.seedrandom(str);
+    return Math.random()
+}

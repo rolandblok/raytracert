@@ -94,16 +94,21 @@ class Texture {
                 return this.color2
             }
         } else if (this.marble) {
-            let x = position.x * Math.PI * 2.0
-            let y = position.y * Math.PI * 2.0
-            let z = position.z * Math.PI * 2.0
+            //let scale = 1
+            //let turbulence = .5
+            let x = position.x
+            let y = position.y
 
-            let scale = 1
-            let turbulence = .5
-            let xx = x-scale*Math.sin(x/turbulence);
-            let yy = y+ scale*Math.cos(y/turbulence);
+            let m = 0;
+            let scales = [1] //[1, 2, 4, 8, 16]
+            for (let scale of scales) {
+                let n = this._marble_scale(x,y,scale)
+                m = (m/2 + n) / 1.5
+            }
 
-            let v = 0.5*(Math.sin(xx+yy)+1.0)
+            //let v = Math.sin((x + y + 100*m)/15);
+            let v = m;
+
             let c1 = this.color1.multiplyScalar(v)
             let c2 = this.color2.multiplyScalar(1-v)
             let gradient_color = c1.add(c2)
@@ -140,5 +145,30 @@ class Texture {
         return mix_color;
     }
 
+
+    _marble_scale(x,y, s) {
+        
+        let x1 = x - (x % s);
+        let y1 = y - (y % s);
+        let x2 = x1 + s;
+        let y2 = y1 + s;
+        let dx1 = (x-x1)/s;
+        let dy1 = (y-y1)/s;
+        let dx2 = (x2-x)/s;
+        let dy2 = (y2-y)/s;
+        let wx1 = 1 - dx1;
+        let wy1 = 1 - dy1;
+        let wx2 = 1 - dx2;
+        let wy2 = 1 - dy2;
+        
+        let r11 = randseed(x1+"_"+y1);
+        let r12 = randseed(x1+"_"+y2);
+        let r21 = randseed(x2+"_"+y1);
+        let r22 = randseed(x2+"_"+y2);
+        
+        let m = (wx1*wy1) * r11 + (wx1*wy2) * r12 + (wx2*wy1) * r21 + (wx2*wy2) * r22;
+
+        return m
+    }
 
 }

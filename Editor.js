@@ -387,6 +387,7 @@ class Editor {
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "checker")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "phong")
                 this.gui_texture_edit_fldr.add(sel_primitive.texture, "phong_size")
+                this.gui_texture_edit_fldr.add(sel_primitive.texture, "marble")
 
                 this.gui_texture_edit_fldr.open()
                 this.gui_primitive_edit_fldr.open()

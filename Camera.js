@@ -118,6 +118,9 @@ class Camera {
     }
 
     raytrace(model, width_pix, height_pix, ctx) {
+
+        let start_time = new Date();
+
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, width_pix, height_pix);
 
@@ -132,7 +135,6 @@ class Camera {
         for (let x = 0; x < width_pix; x++) {
             for (let y = 0; y < height_pix; y++){
                 count_pixels ++
-                this.ray_status = "" + count_pixels + " / " + no_pixels
                 var xx = 0.5 - (x/width_pix) 
                 var yy = 0.5 - (y/height_pix)
                 var dy = look_up_n.clone().multiplyScalar(yy)
@@ -149,6 +151,11 @@ class Camera {
 
             }
         }
+
+        let d_time = (new Date() - start_time) / 1000;
+
+
+        this.ray_status = "" + no_pixels + " px in " + d_time + " s"
 
 
 

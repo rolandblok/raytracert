@@ -27,3 +27,15 @@ QUnit.test( "Quadratic two solution", function( assert ) {
     }
 });
 
+
+QUnit.test( "randseed1", function( assert ) {
+    let r1 = randseed("roland")
+    let r2 = randseed("roland")
+    assert.equal(r1, r2, "two equal seeded random numbers")
+});
+
+QUnit.test( "randseed2", function( assert ) {
+    let r1 = randseed("roland")
+    let r2 = randseed("willem")
+    assert.notEqual(r1, r2, "two equal seeded random numbers")
+});
